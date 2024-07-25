@@ -19,8 +19,8 @@ class AuthController {
   String get email => textEmailController.text;
 
   Future<void> sendMail(String receiverEmail, String code) async {
-    String username = "";
-    String password = "";
+    String username = "kodeinnovateworkspace@gmail.com";
+    String password = "muufdqiuhdmrdzhx";
 
     final smtpServer = gmail(username, password);
 
