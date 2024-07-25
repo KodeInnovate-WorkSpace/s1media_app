@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "895846201577",
+    "project_id": "s1media-app",
+    "storage_bucket": "s1media-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:895846201577:android:2ff1d11ff6602ad20d5878",
+        "android_client_info": {
+          "package_name": "com.s1media.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChNNW-0DiIKRNEkfaiy30P3jbalCJ4oM4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
