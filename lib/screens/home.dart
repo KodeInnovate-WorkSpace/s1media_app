@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,7 +15,24 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _current = 0;
+  late List<Widget> _items;
 
+  @override
+  void initState() {
+    super.initState();
+    _items = [
+      buildImageContainer(
+        "assets/deal_done_broker.jpeg",
+        "Deal Done Brokers",
+        "Video tours of properties and highlighting unique features and amenities",
+      ),
+      buildImageContainer(
+        "assets/the_restro.jpeg",
+        "The Restro",
+        "Capturing the ambiance & culinary delights and showcasing special dishes & events",
+      ),
+    ];
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,77 +91,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  final List<Widget> _items = [
-    Container(
-      width: double.infinity,
-      margin: const EdgeInsets.all(4.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(45.0),
-        color: Colors.grey[100],
-        image: const DecorationImage(image: AssetImage("assets/deal_done_broker.jpeg"), fit: BoxFit.fill),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Title
-            const Text(
-              "Deal Done Brokers",
-              style: TextStyle(color: Colors.red, fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-
-            //sub-text
-            const Text(
-              "Video tours of properties and Highlighting uniue features and amenities",
-              style: TextStyle(color: Colors.white),
-            ),
-            Center(
-              child: ElevatedButton(onPressed: () {}, child: const Text("Enquire")),
-            )
-          ],
-        ),
-      ),
-    ),
-    Container(
-      width: double.infinity,
-      margin: const EdgeInsets.all(4.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(45.0),
-        color: Colors.grey[100],
-        image: const DecorationImage(image: AssetImage("assets/the_restro.jpeg"), fit: BoxFit.fill),
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Title
-            const Text(
-              "The Restro",
-              style: TextStyle(color: Colors.red, fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-
-            //sub-text
-            const Text(
-              "Capturing the ambiance & culinary delights and Showcasing special dishes & events",
-              // maxLines: 1,
-
-              // style: TextStyle(color: Color(0xff8A8B8B)),
-              style: TextStyle(color: Colors.white),
-            ),
-
-            Center(
-              child: ElevatedButton(onPressed: () {}, child: const Text("Enquire")),
-            )
-          ],
-        ),
-      ),
-    ),
-  ];
-
   List<Widget> _buildDots() {
     return List<Widget>.generate(_items.length, (int index) {
       return Container(
@@ -156,5 +103,83 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       );
     });
+  }
+
+  Widget buildImageContainer(String imagePath, String title, String subText) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.all(4.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(45.0),
+        color: Colors.grey[100],
+        image: DecorationImage(
+          image: AssetImage(imagePath),
+          fit: BoxFit.fill,
+        ),
+      ),
+      child: Stack(
+        children: [
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(45.0),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                child: Container(
+                  padding: const EdgeInsets.all(16.0),
+                  color: Colors.white.withOpacity(0.2),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Title
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          color: Colors.red,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8.0),
+                      // Sub-text
+                      Text(
+                        subText,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      const SizedBox(height: 16.0),
+                      Center(
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ButtonStyle(
+                            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                            ),
+                            backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                              (Set<WidgetState> states) {
+                                if (states.contains(WidgetState.disabled)) {
+                                  return Colors.white;
+                                }
+                                return Colors.white;
+                              },
+                            ),
+                          ),
+                          child: const Text(
+                            "Enquire",
+                            style: TextStyle(color: Color(0xffBA1D17)),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
