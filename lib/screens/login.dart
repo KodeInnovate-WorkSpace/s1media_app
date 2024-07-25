@@ -34,7 +34,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Container(
       decoration: const BoxDecoration(
-        // image: DecorationImage(image: AssetImage("assets/login_bg_red.png"), fit: BoxFit.cover),
         color: Color(0xffBA1D17),
       ),
       child: Scaffold(
