@@ -48,12 +48,12 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 80,
             ),
           ),
-          toolbarHeight: 280,
+          toolbarHeight: 180,
         ),
         backgroundColor: Colors.transparent,
         body: Container(
           width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
+          // height: MediaQuery.of(context).size.height,
           decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
@@ -119,6 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     cursorColor: const Color(0xffdc3545),
                                     keyboardType: TextInputType.emailAddress,
                                     style: const TextStyle(color: Colors.grey),
+
                                     decoration: const InputDecoration(
                                       border: InputBorder.none,
                                       focusedBorder: InputBorder.none,

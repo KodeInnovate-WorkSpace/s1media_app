@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import '../controller/auth_controller.dart';
 
 class PhoneScreen extends StatefulWidget {
-  String email;
-  PhoneScreen({super.key, required this.email});
+  final String email;
+  const PhoneScreen({super.key, required this.email});
 
   @override
   State<PhoneScreen> createState() => _PhoneScreenState();
@@ -49,7 +49,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
               height: 80,
             ),
           ),
-          toolbarHeight: 280,
+          toolbarHeight: 180,
           leading: null,
           automaticallyImplyLeading: false,
         ),
@@ -179,7 +179,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
                               phoneLoading = false;
                             });
                           } else {
-                            log("Email or phone is not valid");
+                            log("phone is not valid");
                           }
                         },
                         style: ButtonStyle(
@@ -230,9 +230,5 @@ class _PhoneScreenState extends State<PhoneScreen> {
         ),
       ),
     );
-  }
-
-  bool _isValidEmail(String email) {
-    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
   }
 }

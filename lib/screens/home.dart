@@ -3,8 +3,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:s1media_app/screens/enquire_form.dart';
 import 'package:s1media_app/screens/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../controller/user_controller.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,6 +19,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _current = 0;
   late List<Widget> _items;
+  UserController userObj = UserController();
 
   @override
   void initState() {
@@ -31,8 +35,20 @@ class _HomeScreenState extends State<HomeScreen> {
         "The Restro",
         "Capturing the ambiance & culinary delights and showcasing special dishes & events",
       ),
+      buildImageContainer("assets/autoz_plus.png", "Autoz Plus", "Updates on new and old cars and bikes, buy and sell opportunities, market trends"),
+      buildImageContainer(
+        "assets/the_foodizz.jpeg",
+        "The Foodizz",
+        "Step-by-step cooking videos and featuring professional chefs and home cooks",
+      ),
+      buildImageContainer(
+        "assets/royalz_hotels.jpeg",
+        "Royalz Hotels",
+        "Virtual tours of hotel facilities and highlighting services and guest experience",
+      ),
     ];
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,12 +56,58 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
               onPressed: () async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                await prefs.remove('isLoggedIn');
-                Get.offAll(() => const LoginScreen());
+                showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          backgroundColor: Colors.white,
+                          title: const Text(
+                            "Logout",
+                            style: TextStyle(fontFamily: 'Gilroy-ExtraBold', color: Colors.black),
+                          ),
+                          content: const Text(
+                            "Are you sure you want to logout?",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          actions: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                TextButton(
+                                    onPressed: () => Navigator.of(context).pop(),
+                                    style: ButtonStyle(
+                                      overlayColor: WidgetStateProperty.all(Colors.red[900]),
+                                    ),
+                                    child: const Text(
+                                      "No",
+                                      style: TextStyle(color: Color(0xffEF4B4B), fontFamily: "Gilroy-Black"),
+                                    )),
+                                TextButton(
+                                    onPressed: () async {
+                                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                                      await prefs.remove('isLoggedIn');
+                                      Get.offAll(() => const LoginScreen());
+                                    },
+                                    style: ButtonStyle(
+                                      overlayColor: WidgetStateProperty.all(Colors.grey[700]),
+                                    ),
+                                    child: const Text(
+                                      "Yes",
+                                      style: TextStyle(color: Colors.black, fontFamily: "Gilroy-Black"),
+                                    )),
+                              ],
+                            )
+                          ],
+                        ));
               },
-              icon: const Icon(Icons.login))
+              icon: const Icon(
+                Icons.login,
+                color: Color(0xffBA1D17),
+              ))
         ],
+        title: Image.asset(
+          "assets/full_logo.png",
+          width: 120,
+        ),
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
       ),
@@ -57,8 +119,15 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              "Choose your service ",
-              style: TextStyle(fontSize: 28, color: Color(0xff8A8B8B)),
+              "Our Services",
+              style: TextStyle(
+                fontFamily: "ClashDisplay",
+                fontSize: 28,
+              ),
+            ),
+            const Text(
+              "At S1Media, we offer a range of services designed to showcase your business:",
+              style: TextStyle(fontFamily: "ClashDisplay", fontSize: 15, color: Color(0xff8A8B8B), fontWeight: FontWeight.w100),
             ),
             const SizedBox(
               height: 25,
@@ -78,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       _current = index;
                       HapticFeedback.selectionClick();
                     });
-                    Get.snackbar("Vibration", "", duration: const Duration(milliseconds: 600));
+                    // Get.snackbar("Vibration", "", duration: const Duration(milliseconds: 600));
                   },
                 )),
             Row(
@@ -124,10 +193,11 @@ class _HomeScreenState extends State<HomeScreen> {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(45.0),
               child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                filter: ImageFilter.blur(sigmaX: 15.0, sigmaY: 15.0),
                 child: Container(
                   padding: const EdgeInsets.all(16.0),
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.black.withOpacity(0.2),
+                  height: 158,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,9 +206,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       Text(
                         title,
                         style: const TextStyle(
-                          color: Colors.red,
+                          color: Colors.white,
                           fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w900,
                         ),
                       ),
                       const SizedBox(height: 8.0),
@@ -147,10 +217,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         subText,
                         style: const TextStyle(color: Colors.white),
                       ),
-                      const SizedBox(height: 16.0),
+                      // const SizedBox(height: 8.0),
+                      // Enquire button
                       Center(
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            var userDetails = await userObj.fetchUserDetails();
+                            Get.to(() => EnquireForm(userDetails: userDetails));
+                          },
                           style: ButtonStyle(
                             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                               RoundedRectangleBorder(
@@ -168,7 +242,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           child: const Text(
                             "Enquire",
-                            style: TextStyle(color: Color(0xffBA1D17)),
+                            style: TextStyle(color: Color(0xffBA1D17), fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
