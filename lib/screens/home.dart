@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           backgroundColor: Colors.white,
                           title: const Text(
                             "Logout",
-                            style: TextStyle(fontFamily: 'Gilroy-ExtraBold', color: Colors.black),
+                            style: TextStyle(color: Colors.black),
                           ),
                           content: const Text(
                             "Are you sure you want to logout?",
@@ -79,7 +79,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                     child: const Text(
                                       "No",
-                                      style: TextStyle(color: Color(0xffEF4B4B), fontFamily: "Gilroy-Black"),
+                                      style: TextStyle(
+                                        color: Color(0xffEF4B4B),
+                                      ),
                                     )),
                                 TextButton(
                                     onPressed: () async {
@@ -92,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                     child: const Text(
                                       "Yes",
-                                      style: TextStyle(color: Colors.black, fontFamily: "Gilroy-Black"),
+                                      style: TextStyle(color: Colors.black),
                                     )),
                               ],
                             )
@@ -121,13 +123,13 @@ class _HomeScreenState extends State<HomeScreen> {
             const Text(
               "Our Services",
               style: TextStyle(
-                fontFamily: "ClashDisplay",
+                fontFamily: "Satoshi-Black",
                 fontSize: 28,
               ),
             ),
             const Text(
               "At S1Media, we offer a range of services designed to showcase your business:",
-              style: TextStyle(fontFamily: "ClashDisplay", fontSize: 15, color: Color(0xff8A8B8B), fontWeight: FontWeight.w100),
+              style: TextStyle(fontFamily: "Satoshi-Medium", fontSize: 15, color: Color(0xff8A8B8B)),
             ),
             const SizedBox(
               height: 25,
@@ -208,14 +210,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 20,
-                          fontWeight: FontWeight.w900,
+                          fontFamily: "Satoshi-Black",
                         ),
                       ),
                       const SizedBox(height: 8.0),
                       // Sub-text
                       Text(
                         subText,
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontFamily: "Satoshi-Medium",
+                        ),
                       ),
                       // const SizedBox(height: 8.0),
                       // Enquire button
@@ -223,7 +228,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: ElevatedButton(
                           onPressed: () async {
                             var userDetails = await userObj.fetchUserDetails();
-                            Get.to(() => EnquireForm(userDetails: userDetails));
+                            Get.to(() => EnquireForm(userDetails: userDetails, serviceName: title));
                           },
                           style: ButtonStyle(
                             shape: WidgetStateProperty.all<RoundedRectangleBorder>(

@@ -46,6 +46,22 @@ flutter:
     - assets/otp_animation.json
 
   fonts:
-    - family: ClashDisplay
+    - family: Satoshi-Black
       fonts:
-        - asset: assets/fonts/ClashDisplay-Variable.ttf
+        - asset: assets/fonts/Satoshi-Black.otf
+
+    - family: Satoshi-Bold
+      fonts:
+        - asset: assets/fonts/Satoshi-Bold.otf
+
+    - family: Satoshi-Light
+      fonts:
+        - asset: assets/fonts/Satoshi-Light.otf
+
+    - family: Satoshi-Medium
+      fonts:
+        - asset: assets/fonts/Satoshi-Medium.otf
+
+    - family: Satoshi-Regular
+      fonts:
+        - asset: assets/fonts/Satoshi-Regular.otf

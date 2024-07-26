@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class EnquireForm extends StatefulWidget {
   final Map<String, String?> userDetails;
+  final serviceName;
 
-  const EnquireForm({super.key, required this.userDetails});
+  const EnquireForm({super.key, required this.userDetails, required this.serviceName});
 
   @override
   State<EnquireForm> createState() => _EnquireFormState();
@@ -24,6 +25,11 @@ class _EnquireFormState extends State<EnquireForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
+
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -77,6 +83,29 @@ class _EnquireFormState extends State<EnquireForm> {
             ),
             const SizedBox(height: 20),
 
+            // Service
+            TextFormField(
+              cursorColor: const Color(0xffdc3545),
+              initialValue: widget.serviceName,
+              style: const TextStyle(color: Colors.grey),
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                filled: true,
+                fillColor: Colors.white,
+                hintText: "Enter Service",
+                hintStyle: TextStyle(color: Color(0xffdcdcdc)),
+              ),
+              autofocus: false,
+              validator: (value) {
+                return null;
+              },
+            ),
+            const SizedBox(height: 20),
+
             // Name
             TextFormField(
               cursorColor: const Color(0xffdc3545),
@@ -98,7 +127,6 @@ class _EnquireFormState extends State<EnquireForm> {
               },
             ),
             const SizedBox(height: 20),
-            // Service
           ],
         ),
       ),

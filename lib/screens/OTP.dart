@@ -63,11 +63,11 @@ class _OTPScreenState extends State<OTPScreen> {
           children: [
             const Text(
               "We've sent a verification code to",
-              style: TextStyle(fontFamily: "Gilroy-Bold", color: Color(0xffc9cace), fontSize: 16),
+              style: TextStyle( color: Color(0xffc9cace), fontSize: 16),
             ),
             Text(
               widget.email,
-              style: const TextStyle(fontFamily: "Gilroy-SemiBold", fontSize: 17),
+              style: const TextStyle(fontSize: 17),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
