@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:s1media_app/widget/enquire_text_field.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../controller/user_controller.dart';
 
 class EnquireForm extends StatefulWidget {
@@ -77,8 +80,9 @@ class _EnquireFormState extends State<EnquireForm> {
                       decoration: BoxDecoration(color: const Color(0xffdc3545), borderRadius: BorderRadius.circular(10)),
                       width: double.infinity,
                       child: TextButton(
-                          onPressed: () {
+                          onPressed: () async {
                             HapticFeedback.selectionClick();
+                            await sendWhatsAppMessage();
                           },
                           child: const Text(
                             "Enquire",
@@ -93,5 +97,31 @@ class _EnquireFormState extends State<EnquireForm> {
         },
       ),
     );
+  }
+
+  Future<void> sendWhatsAppMessage() async {
+    String email = emailController.text;
+    String phone = phoneController.text;
+    String service = serviceController.text;
+    String name = nameController.text;
+    String message = msgController.text;
+
+    if (email.isEmpty || phone.isEmpty || service.isEmpty || name.isEmpty || message.isEmpty) {
+      // Show an error message or do something to inform the user
+      log('Please fill all the fields');
+      return;
+    }
+
+    String fullMessage = "Email: $email\nPhone: $phone\nService: $service\nName: $name\n $message";
+    String phoneNumber = ""; // Replace with the recipient's phone number
+
+    // Construct the WhatsApp URL
+    String whatsappUrl = "https://wa.me/$phoneNumber?text=${Uri.encodeComponent(fullMessage)}";
+
+    if (await canLaunch(whatsappUrl)) {
+      await launch(whatsappUrl);
+    } else {
+      log('Could not launch $whatsappUrl');
+    }
   }
 }
