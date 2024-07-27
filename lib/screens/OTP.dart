@@ -41,7 +41,7 @@ class _OTPScreenState extends State<OTPScreen> {
       appBar: AppBar(
         title: const Text(
           "OTP Verification",
-          style: TextStyle(fontSize: 17),
+          style: TextStyle(fontSize: 17, fontFamily: 'Satoshi-Medium'),
         ),
         elevation: 0,
         backgroundColor: const Color(0xfff7f7f7),
@@ -63,11 +63,11 @@ class _OTPScreenState extends State<OTPScreen> {
           children: [
             const Text(
               "We've sent a verification code to",
-              style: TextStyle( color: Color(0xffc9cace), fontSize: 16),
+              style: TextStyle(color: Color(0xffc9cace), fontSize: 16, fontFamily: 'Satoshi-Bold'),
             ),
             Text(
               widget.email,
-              style: const TextStyle(fontSize: 17),
+              style: const TextStyle(fontSize: 17, fontFamily: 'Satoshi-Medium'),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -135,10 +135,7 @@ class _OTPScreenState extends State<OTPScreen> {
                       child: Center(
                         child: Text(
                           "Verify",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
-                          ),
+                          style: TextStyle(color: Colors.white, fontSize: 16.0, fontFamily: 'Satoshi-Black'),
                         ),
                       ),
                     ),

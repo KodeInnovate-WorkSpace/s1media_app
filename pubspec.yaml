@@ -65,3 +65,31 @@ flutter:
     - family: Satoshi-Regular
       fonts:
         - asset: assets/fonts/Satoshi-Regular.otf
+
+    - family: cgr
+      fonts:
+        - asset: assets/fonts/CabinetGrotesk-Regular.otf
+
+    - family: cgb
+      fonts:
+        - asset: assets/fonts/CabinetGrotesk-Bold.otf
+
+    - family: cgl
+      fonts:
+        - asset: assets/fonts/CabinetGrotesk-Light.otf
+
+    - family: cgm
+      fonts:
+        - asset: assets/fonts/CabinetGrotesk-Medium.otf
+
+    - family: cgblack
+      fonts:
+        - asset: assets/fonts/CabinetGrotesk-Black.otf
+
+    - family: cgexb
+      fonts:
+        - asset: assets/fonts/CabinetGrotesk-Extrabold.otf
+
+    - family: cgexl
+      fonts:
+        - asset: assets/fonts/CabinetGrotesk-Extralight.otf

@@ -6,8 +6,8 @@ import 'package:get/get.dart';
 import 'package:s1media_app/screens/enquire_form.dart';
 import 'package:s1media_app/screens/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../controller/user_controller.dart';
+import '../model/myservice.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,92 +19,65 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _current = 0;
   late List<Widget> _items;
+  late List<MyService> _myServices;
   UserController userObj = UserController();
+  var scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _items = [
-      buildImageContainer(
-        "assets/deal_done_broker.jpeg",
-        "Deal Done Brokers",
-        "Video tours of properties and highlighting unique features and amenities",
+    _myServices = [
+      MyService(
+        imagePath: "assets/deal_done_broker.jpeg",
+        title: "Deal Done Brokers",
+        subText: "Video tours of properties and highlighting unique features and amenities",
       ),
-      buildImageContainer(
-        "assets/the_restro.jpeg",
-        "The Restro",
-        "Capturing the ambiance & culinary delights and showcasing special dishes & events",
+      MyService(
+        imagePath: "assets/the_restro.jpeg",
+        title: "The Restro",
+        subText: "Capturing the ambiance & culinary delights and showcasing special dishes & events",
       ),
-      buildImageContainer("assets/autoz_plus.png", "Autoz Plus", "Updates on new and old cars and bikes, buy and sell opportunities, market trends"),
-      buildImageContainer(
-        "assets/the_foodizz.jpeg",
-        "The Foodizz",
-        "Step-by-step cooking videos and featuring professional chefs and home cooks",
+      MyService(
+        imagePath: "assets/autoz_plus.png",
+        title: "Autoz Plus",
+        subText: "Updates on new and old cars and bikes, buy and sell opportunities, market trends",
       ),
-      buildImageContainer(
-        "assets/royalz_hotels.jpeg",
-        "Royalz Hotels",
-        "Virtual tours of hotel facilities and highlighting services and guest experience",
+      MyService(
+        imagePath: "assets/the_foodizz.jpeg",
+        title: "The Foodizz",
+        subText: "Step-by-step cooking videos and featuring professional chefs and home cooks",
+      ),
+      MyService(
+        imagePath: "assets/royalz_hotels.jpeg",
+        title: "Royalz Hotels",
+        subText: "Virtual tours of hotel facilities and highlighting services and guest experience",
       ),
     ];
+
+    _items = _myServices.map((service) => buildImageContainer(service)).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
         actions: [
-          IconButton(
-              onPressed: () async {
-                showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                          backgroundColor: Colors.white,
-                          title: const Text(
-                            "Logout",
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          content: const Text(
-                            "Are you sure you want to logout?",
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          actions: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                TextButton(
-                                    onPressed: () => Navigator.of(context).pop(),
-                                    style: ButtonStyle(
-                                      overlayColor: WidgetStateProperty.all(Colors.red[900]),
-                                    ),
-                                    child: const Text(
-                                      "No",
-                                      style: TextStyle(
-                                        color: Color(0xffEF4B4B),
-                                      ),
-                                    )),
-                                TextButton(
-                                    onPressed: () async {
-                                      SharedPreferences prefs = await SharedPreferences.getInstance();
-                                      await prefs.remove('isLoggedIn');
-                                      Get.offAll(() => const LoginScreen());
-                                    },
-                                    style: ButtonStyle(
-                                      overlayColor: WidgetStateProperty.all(Colors.grey[700]),
-                                    ),
-                                    child: const Text(
-                                      "Yes",
-                                      style: TextStyle(color: Colors.black),
-                                    )),
-                              ],
-                            )
-                          ],
-                        ));
-              },
-              icon: const Icon(
-                Icons.login,
-                color: Color(0xffBA1D17),
-              ))
+          // Menu Icon
+          GestureDetector(
+            onTap: () {
+              scaffoldKey.currentState?.openDrawer();
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Image.asset(
+                "assets/menu.png",
+                fit: BoxFit.contain,
+                width: 20,
+                height: 20,
+              ),
+            ),
+          ),
         ],
         title: Image.asset(
           "assets/full_logo.png",
@@ -112,6 +85,77 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
+        automaticallyImplyLeading: false,
+      ),
+      drawer: Drawer(
+        backgroundColor: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 50),
+          child: Column(
+            children: [
+              Image.asset(
+                "assets/full_logo.png",
+                width: 120,
+              ),
+
+              //Contact us
+              ListTile(
+                title: Text("Contact Us"),
+              ),
+
+              //Logout Button
+              ListTile(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                            backgroundColor: Colors.white,
+                            title: const Text(
+                              "Logout",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            content: const Text(
+                              "Are you sure you want to logout?",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            actions: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  TextButton(
+                                      onPressed: () => Navigator.of(context).pop(),
+                                      style: ButtonStyle(
+                                        overlayColor: WidgetStateProperty.all(Colors.red[900]),
+                                      ),
+                                      child: const Text(
+                                        "No",
+                                        style: TextStyle(
+                                          color: Color(0xffEF4B4B),
+                                        ),
+                                      )),
+                                  TextButton(
+                                      onPressed: () async {
+                                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                                        await prefs.remove('isLoggedIn');
+                                        Get.offAll(() => const LoginScreen());
+                                      },
+                                      style: ButtonStyle(
+                                        overlayColor: WidgetStateProperty.all(Colors.grey[700]),
+                                      ),
+                                      child: const Text(
+                                        "Yes",
+                                        style: TextStyle(color: Colors.black),
+                                      )),
+                                ],
+                              )
+                            ],
+                          ));
+                },
+                title: Text("Logout"),
+              ),
+            ],
+          ),
+        ),
       ),
       backgroundColor: Colors.white,
       body: Padding(
@@ -123,13 +167,13 @@ class _HomeScreenState extends State<HomeScreen> {
             const Text(
               "Our Services",
               style: TextStyle(
-                fontFamily: "Satoshi-Black",
-                fontSize: 28,
+                fontFamily: "cgblack",
+                fontSize: 30,
               ),
             ),
             const Text(
-              "At S1Media, we offer a range of services designed to showcase your business:",
-              style: TextStyle(fontFamily: "Satoshi-Medium", fontSize: 15, color: Color(0xff8A8B8B)),
+              "At S1Media, we offer a range of services designed to showcase your business",
+              style: TextStyle(fontFamily: "cgb", fontSize: 13, color: Color(0xff8A8B8B)),
             ),
             const SizedBox(
               height: 25,
@@ -141,20 +185,25 @@ class _HomeScreenState extends State<HomeScreen> {
                   autoPlay: false,
                   autoPlayCurve: Curves.fastOutSlowIn,
                   enableInfiniteScroll: false,
-                  viewportFraction: 1.0,
-                  enlargeCenterPage: false,
-                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                  viewportFraction: 1,
+                  enlargeCenterPage: true,
                   onPageChanged: (index, reason) {
                     setState(() {
                       _current = index;
-                      HapticFeedback.selectionClick();
                     });
-                    // Get.snackbar("Vibration", "", duration: const Duration(milliseconds: 600));
                   },
                 )),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: _buildDots(),
+              children: _items.map((item) {
+                int index = _items.indexOf(item);
+                return Container(
+                  width: 8.0,
+                  height: 8.0,
+                  margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                  decoration: BoxDecoration(shape: BoxShape.circle, color: _current == index ? const Color(0xffBA1D17) : const Color(0xffD9D9D9)),
+                );
+              }).toList(),
             ),
           ],
         ),
@@ -162,21 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  List<Widget> _buildDots() {
-    return List<Widget>.generate(_items.length, (int index) {
-      return Container(
-        width: 8.0,
-        height: 8.0,
-        margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: _current == index ? const Color(0xffBA1D17) : const Color.fromRGBO(0, 0, 0, 0.1),
-        ),
-      );
-    });
-  }
-
-  Widget buildImageContainer(String imagePath, String title, String subText) {
+  Widget buildImageContainer(MyService service) {
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.all(4.0),
@@ -184,7 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
         borderRadius: BorderRadius.circular(45.0),
         color: Colors.grey[100],
         image: DecorationImage(
-          image: AssetImage(imagePath),
+          image: AssetImage(service.imagePath),
           fit: BoxFit.fill,
         ),
       ),
@@ -206,29 +241,34 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       // Title
                       Text(
-                        title,
+                        service.title,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 20,
-                          fontFamily: "Satoshi-Black",
+                          fontFamily: "cgblack",
                         ),
                       ),
                       const SizedBox(height: 8.0),
                       // Sub-text
                       Text(
-                        subText,
+                        service.subText,
                         style: const TextStyle(
                           color: Colors.white,
-                          fontFamily: "Satoshi-Medium",
+                          fontFamily: "cgm",
                         ),
                       ),
-                      // const SizedBox(height: 8.0),
                       // Enquire button
                       Center(
-                        child: ElevatedButton(
+                        child: OutlinedButton(
                           onPressed: () async {
-                            var userDetails = await userObj.fetchUserDetails();
-                            Get.to(() => EnquireForm(userDetails: userDetails, serviceName: title));
+                            HapticFeedback.selectionClick();
+                            Get.to(
+                              () => EnquireForm(serviceName: service.title),
+                              // transition: Transition.rightToLeft,
+                              transition: Transition.fadeIn,
+                              duration: const Duration(milliseconds: 500),
+                              // curve: Curves.easeInOut,
+                            );
                           },
                           style: ButtonStyle(
                             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
@@ -236,18 +276,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                 borderRadius: BorderRadius.circular(20.0),
                               ),
                             ),
-                            backgroundColor: WidgetStateProperty.resolveWith<Color>(
-                              (Set<WidgetState> states) {
-                                if (states.contains(WidgetState.disabled)) {
-                                  return Colors.white;
-                                }
-                                return Colors.white;
-                              },
+                            side: WidgetStateProperty.all<BorderSide>(
+                              const BorderSide(
+                                color: Color(0xffBA1D17), // Set the border color
+                                width: 2.5, // Set the border width
+                              ),
                             ),
                           ),
                           child: const Text(
                             "Enquire",
-                            style: TextStyle(color: Color(0xffBA1D17), fontWeight: FontWeight.bold),
+                            style: TextStyle(color: Colors.white, fontFamily: 'cgblack'),
                           ),
                         ),
                       ),

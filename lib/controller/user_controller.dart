@@ -1,37 +1,22 @@
-import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:s1media_app/controller/auth_controller.dart';
+import 'auth_controller.dart';
 
 class UserController {
-  String? userFetchedEmail;
-  String? userFetchedPhone;
-
-  Future<Map<String, String?>> fetchUserDetails() async {
-    AuthController authController = AuthController();
+  Stream<Map<String, String?>> getUserDetailsStream() async* {
+    final authController = AuthController();
     await authController.retrieveUser();
 
-    try {
-      var userSnapshot = await FirebaseFirestore.instance.collection('users').where('email', isEqualTo: authController.email).get();
+    final userStream = FirebaseFirestore.instance.collection('users').where('email', isEqualTo: authController.email).snapshots();
 
-      if (userSnapshot.docs.isNotEmpty) {
-        var userData = userSnapshot.docs.first.data();
-        userFetchedEmail = userData['email'];
-        log("User Email: $userFetchedEmail");
-        userFetchedPhone = userData['phone'];
-        log("User Phone: $userFetchedPhone");
-
-        return {
-          'email': userFetchedEmail,
-          'phone': userFetchedPhone
-        };
+    yield* userStream.map((snapshot) {
+      if (snapshot.docs.isNotEmpty) {
+        final userData = snapshot.docs.first.data();
+        final userFetchedEmail = userData['email'];
+        final userFetchedPhone = userData['phone'];
+        return {'email': userFetchedEmail, 'phone': userFetchedPhone};
+      } else {
+        return {'email': null, 'phone': null};
       }
-    } catch (e) {
-      log("Error getting user details: $e");
-    }
-    return {
-      'email': null,
-      'phone': null
-    };
+    });
   }
 }
-

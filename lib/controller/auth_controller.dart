@@ -81,10 +81,13 @@ class AuthController {
     try {
       final sendReport = await send(message, smtpServer);
       debugPrint('Message sent: $sendReport');
-      Get.to(() => OTPScreen(
-            email: receiverEmail,
-            otp: code,
-          ));
+      Get.to(
+          () => OTPScreen(
+                email: receiverEmail,
+                otp: code,
+              ),
+          transition: Transition.rightToLeft,
+          duration: const Duration(milliseconds: 500));
     } catch (e) {
       debugPrint('Message not sent: $e');
     }
@@ -117,7 +120,7 @@ class AuthController {
       await checkUserExistence(userEmail);
       if (!_isUserExist) {
         await FirebaseFirestore.instance.collection('users').doc(userId).set(userFields);
-        Get.to(() => PhoneScreen(email: userEmail));
+        Get.to(() => PhoneScreen(email: userEmail), transition: Transition.rightToLeft, duration: const Duration(milliseconds: 500));
       } else {
         debugPrint("User already exists.");
         await sendMail(userEmail, generateOtp());

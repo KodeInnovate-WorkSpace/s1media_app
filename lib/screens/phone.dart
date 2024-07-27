@@ -70,7 +70,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
               const Center(
                 child: Text(
                   "Phone No.",
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 30, fontFamily: 'Satoshi-Black'),
                 ),
               ),
               Padding(
@@ -107,7 +107,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
                                   'Phone',
                                   style: TextStyle(
                                     color: Colors.black,
-                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Satoshi-Bold',
                                     fontSize: 16,
                                   ),
                                 ),
@@ -120,7 +120,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
                                     controller: phoneController,
                                     cursorColor: const Color(0xffdc3545),
                                     keyboardType: TextInputType.phone,
-                                    style: const TextStyle(color: Colors.grey),
+                                    style: const TextStyle(color: Colors.grey, fontFamily: 'Satoshi-Medium'),
                                     decoration: const InputDecoration(
                                       border: InputBorder.none,
                                       focusedBorder: InputBorder.none,
@@ -130,7 +130,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
                                       filled: true,
                                       fillColor: Colors.white,
                                       hintText: "Enter your phone no.",
-                                      hintStyle: TextStyle(color: Color(0xffdcdcdc)),
+                                      hintStyle: TextStyle(color: Color(0xffdcdcdc), fontFamily: 'Satoshi-Medium'),
                                     ),
                                     autofocus: true,
                                     inputFormatters: [LengthLimitingTextInputFormatter(10), FilteringTextInputFormatter.digitsOnly],
@@ -213,10 +213,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
                                 child: Center(
                                   child: Text(
                                     "Next",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16.0,
-                                    ),
+                                    style: TextStyle(color: Colors.white, fontSize: 16.0, fontFamily: 'Satoshi-Black'),
                                   ),
                                 ),
                               ),

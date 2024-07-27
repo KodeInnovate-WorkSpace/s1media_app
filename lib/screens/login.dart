@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const Center(
                 child: Text(
                   "Login",
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 30, fontFamily: 'Satoshi-Black'),
                 ),
               ),
               Padding(
@@ -104,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   'Email',
                                   style: TextStyle(
                                     color: Colors.black,
-                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Satoshi-Bold',
                                     fontSize: 16,
                                   ),
                                 ),
@@ -118,8 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     controller: emailController,
                                     cursorColor: const Color(0xffdc3545),
                                     keyboardType: TextInputType.emailAddress,
-                                    style: const TextStyle(color: Colors.grey),
-
+                                    style: const TextStyle(color: Colors.grey, fontFamily: 'Satoshi-Medium'),
                                     decoration: const InputDecoration(
                                       border: InputBorder.none,
                                       focusedBorder: InputBorder.none,
@@ -129,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       filled: true,
                                       fillColor: Colors.white,
                                       hintText: "Enter your email address",
-                                      hintStyle: TextStyle(color: Color(0xffdcdcdc)),
+                                      hintStyle: TextStyle(color: Color(0xffdcdcdc), fontFamily: 'Satoshi-Medium'),
                                     ),
                                     autofocus: true,
                                     validator: (value) {
@@ -201,10 +200,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: Center(
                                   child: Text(
                                     "Next",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16.0,
-                                    ),
+                                    style: TextStyle(color: Colors.white, fontSize: 16.0, fontFamily: 'Satoshi-Black'),
                                   ),
                                 ),
                               ),
