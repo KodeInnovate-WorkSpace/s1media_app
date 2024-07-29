@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:s1media_app/screens/contact.dart';
 import 'package:s1media_app/screens/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../controller/auth_controller.dart';
@@ -126,23 +127,29 @@ class _HomeScreenState extends State<HomeScreen> {
 
               if (userType == 1)
                 //Admin
-                const ListTile(
-                  leading: Icon(
-                    Icons.data_object_sharp,
-                    // size: 18,
-                    color: Color(0xffdc3545),
-                  ),
-                  title: Text(
-                    "Admin",
-                    style: TextStyle(fontFamily: 'cgb', fontSize: 18),
+                InkWell(
+                  onTap: () {},
+                  splashColor: const Color(0xffdc3545),
+                  child: const ListTile(
+                    leading: Icon(
+                      Icons.data_object_sharp,
+                      // size: 18,
+                      color: Color(0xffdc3545),
+                    ),
+                    title: Text(
+                      "Admin",
+                      style: TextStyle(fontFamily: 'cgb', fontSize: 18),
+                    ),
                   ),
                 ),
 
               //Contact us
               InkWell(
-                onTap: () {},
-                // splashColor: const Color.fromRGBO(255, 20, 0, 100),
+                onTap: () {
+                  Get.to(() => const ContactScreen());
+                },
                 splashColor: const Color(0xffdc3545),
+                // splashColor: const Color.fromRGBO(255, 20, 0, 100),
                 child: const ListTile(
                   leading: Icon(
                     Icons.near_me,
@@ -244,9 +251,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   "At S1Media, we offer a range of services designed to showcase your business",
                   style: TextStyle(fontFamily: "cgm", fontSize: 15, color: Color(0xff8A8B8B)),
                 ),
+
                 const SizedBox(
                   height: 25,
                 ),
+
                 //Slider
                 CarouselSlider(
                     items: _items,
