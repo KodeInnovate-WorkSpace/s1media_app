@@ -10,8 +10,9 @@ import '../controller/user_controller.dart';
 
 class EnquireForm extends StatefulWidget {
   final String serviceName;
+  final List<String> services;
 
-  const EnquireForm({super.key, required this.serviceName});
+  const EnquireForm({super.key, required this.serviceName, required this.services});
 
   @override
   State<EnquireForm> createState() => _EnquireFormState();
@@ -27,10 +28,13 @@ class _EnquireFormState extends State<EnquireForm> {
   TextEditingController serviceController = TextEditingController();
   UserController userObj = UserController();
 
+  String? initialDropdownValue;
+
   @override
   void initState() {
     super.initState();
     serviceController.text = widget.serviceName;
+    initialDropdownValue = widget.serviceName;
   }
 
   @override
@@ -102,13 +106,53 @@ class _EnquireFormState extends State<EnquireForm> {
                             }),
                             const SizedBox(height: 20),
 
-                            //Service
-                            enquireTextField(serviceController, "Enter the service", setState, (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Service is empty';
-                              }
-                              return null;
-                            }),
+                            DropdownButtonFormField<String>(
+                              value: initialDropdownValue,
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  initialDropdownValue = newValue;
+                                });
+                              },
+                              items: widget.services.map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: const Color(0xfff7f8fa),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  borderSide: BorderSide.none,
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  borderSide: const BorderSide(
+                                    color: Color(0xffE8E9EB),
+                                    width: 1.0,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  borderSide: const BorderSide(
+                                    color: Color(0xffE8E9EB),
+                                    width: 1.0,
+                                  ),
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please select a service';
+                                }
+                                return null;
+                              },
+                              style: const TextStyle(color: Colors.grey, fontFamily: 'cgm', fontSize: 15),
+                              dropdownColor: const Color(0xfff7f8fa),
+                              iconEnabledColor: Colors.grey,
+                              iconDisabledColor: Colors.grey[300],
+                            ),
+
                             const SizedBox(height: 20),
 
                             //Name

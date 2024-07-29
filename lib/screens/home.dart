@@ -329,7 +329,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           onPressed: () async {
                             HapticFeedback.selectionClick();
                             Get.to(
-                              () => EnquireForm(serviceName: service.title),
+                              () => EnquireForm(serviceName: service.title, services: _myServices.map((s) => s.title).toList()),
                               // transition: Transition.rightToLeft,
                               transition: Transition.fadeIn,
                               duration: const Duration(milliseconds: 500),
