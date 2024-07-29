@@ -107,6 +107,27 @@ class AuthController {
     }
   }
 
+  Future<int?> userType(String userEmail) async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    try {
+      Query query = firestore.collection('users').where('email', isEqualTo: userEmail);
+
+      QuerySnapshot querySnapshot = await query.get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        QueryDocumentSnapshot doc = querySnapshot.docs.first;
+
+        return doc.get('type');
+      } else {
+        debugPrint("No user found with email: $userEmail");
+        return null;
+      }
+    } catch (e) {
+      debugPrint("Error fetching user type: $e");
+      return null;
+    }
+  }
+
   Future<void> saveUser(String userEmail) async {
     // Get today's date
     String todayDate = DateFormat('dd-MM-yyyy').format(DateTime.now());
@@ -115,6 +136,7 @@ class AuthController {
       'id': userId,
       'email': userEmail,
       'date': todayDate,
+      'type': 0,
     };
 
     try {

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:ui';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:s1media_app/screens/enquire_form.dart';
 import 'package:s1media_app/screens/login.dart';
 import 'package:s1media_app/screens/video.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../controller/auth_controller.dart';
 import '../controller/user_controller.dart';
 import '../model/myservice.dart';
 
@@ -23,9 +25,12 @@ class _HomeScreenState extends State<HomeScreen> {
   late List<Widget> _items;
   late List<MyService> _myServices;
   UserController userObj = UserController();
+  AuthController authObj = AuthController();
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool _isTextVisible = false;
+
+  int userType = 0;
 
   @override
   void initState() {
@@ -59,12 +64,21 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
 
     _items = _myServices.map((service) => buildImageContainer(service)).toList();
-
+    getUserType();
     // Trigger the animation after a short delay
     Timer(const Duration(milliseconds: 500), () {
       setState(() {
         _isTextVisible = true;
       });
+    });
+  }
+
+  getUserType() async {
+    await authObj.retrieveUser();
+    int fetchedUserType = (await authObj.userType(authObj.email))!;
+    setState(() {
+      userType = fetchedUserType;
+      log("User Type: $userType");
     });
   }
 
@@ -111,6 +125,21 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(
                 height: 30,
               ),
+
+              if (userType == 1)
+                //Admin
+                const ListTile(
+                  leading: Icon(
+                    Icons.data_object_sharp,
+                    // size: 18,
+                    color: Color(0xffdc3545),
+                  ),
+                  title: Text(
+                    "Admin",
+                    style: TextStyle(fontFamily: 'cgb', fontSize: 18),
+                  ),
+                ),
+
               //Contact us
               const ListTile(
                 leading: Icon(

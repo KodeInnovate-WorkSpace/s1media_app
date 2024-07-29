@@ -14,7 +14,6 @@ class _VideoScreenState extends State<VideoScreen> {
   @override
   void initState() {
     super.initState();
-
     videoController = YoutubePlayerController(
       // initialVideoId: 'u31qwQUeGuM', // Just the video ID
       params: const YoutubePlayerParams(
@@ -23,13 +22,12 @@ class _VideoScreenState extends State<VideoScreen> {
         loop: false,
       ),
     );
-
     videoController.loadVideo("https://www.youtube.com/watch?v=u31qwQUeGuM");
   }
 
   @override
   void dispose() {
-    videoController.close(); // Dispose of the controller properly
+    videoController.close();
     super.dispose();
   }
 
