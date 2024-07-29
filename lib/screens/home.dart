@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -98,14 +97,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 "assets/full_logo.png",
                 width: 120,
               ),
-
-              const Divider(),
-
+              const SizedBox(
+                height: 30,
+              ),
               //Contact us
               const ListTile(
+                leading: Icon(
+                  Icons.contact_page,
+                  // size: 18,
+                  color: Color(0xffdc3545),
+                ),
                 title: Text(
                   "Contact Us",
-                  style: TextStyle(fontFamily: 'cgb'),
+                  style: TextStyle(fontFamily: 'cgb', fontSize: 18),
                 ),
               ),
 
@@ -159,12 +163,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 leading: const Icon(
                   Icons.logout,
-                  size: 18,
+                  // size: 18,
                   color: Color(0xffdc3545),
                 ),
                 title: const Text(
                   "Logout",
-                  style: TextStyle(fontFamily: 'cgb'),
+                  style: TextStyle(fontFamily: 'cgb', fontSize: 18),
                 ),
               ),
             ],
