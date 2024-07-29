@@ -94,7 +94,7 @@ class _MyAppState extends State<MyAppState> {
           return const Scaffold(
             body: Center(
               child: CircularProgressIndicator(
-                color: Colors.green,
+                color: Color(0xffBA1D17),
               ),
             ),
           );
