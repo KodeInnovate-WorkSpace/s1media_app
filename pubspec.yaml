@@ -44,7 +44,6 @@ flutter:
   assets:
     - assets/
     - assets/login_bg.png
-    - assets/otp_animation.json
     - assets/.env
 
   fonts:

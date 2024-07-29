@@ -29,7 +29,6 @@ class _HomeScreenState extends State<HomeScreen> {
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool _isTextVisible = false;
-
   int userType = 0;
 
   @override
