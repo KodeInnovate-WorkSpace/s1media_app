@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,8 @@ class _HomeScreenState extends State<HomeScreen> {
   late List<MyService> _myServices;
   UserController userObj = UserController();
   var scaffoldKey = GlobalKey<ScaffoldState>();
+
+  bool _isTextVisible = false;
 
   @override
   void initState() {
@@ -55,6 +58,13 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
 
     _items = _myServices.map((service) => buildImageContainer(service)).toList();
+
+    // Trigger the animation after a short delay
+    Timer(const Duration(milliseconds: 500), () {
+      setState(() {
+        _isTextVisible = true;
+      });
+    });
   }
 
   @override
@@ -182,20 +192,31 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Our Services",
-              style: TextStyle(
-                fontFamily: "cgblack",
-                fontSize: 35,
+            // Our Service
+            AnimatedOpacity(
+              opacity: _isTextVisible ? 1.0 : 0.0,
+              duration: const Duration(seconds: 1),
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Our Services",
+                    style: TextStyle(
+                      fontFamily: "cgblack",
+                      fontSize: 35,
+                    ),
+                  ),
+                  Text(
+                    "At S1Media, we offer a range of services designed to showcase your business",
+                    style: TextStyle(fontFamily: "cgm", fontSize: 15, color: Color(0xff8A8B8B)),
+                  ),
+                ],
               ),
-            ),
-            const Text(
-              "At S1Media, we offer a range of services designed to showcase your business",
-              style: TextStyle(fontFamily: "cgm", fontSize: 15, color: Color(0xff8A8B8B)),
             ),
             const SizedBox(
               height: 25,
             ),
+            //Slider
             CarouselSlider(
                 items: _items,
                 options: CarouselOptions(
@@ -211,6 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     });
                   },
                 )),
+            // Dots
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: _items.map((item) {

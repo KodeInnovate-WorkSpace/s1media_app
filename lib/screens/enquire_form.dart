@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,6 +25,7 @@ class _EnquireFormState extends State<EnquireForm> {
   TextEditingController msgController = TextEditingController();
   TextEditingController serviceController = TextEditingController();
   UserController userObj = UserController();
+
 
   @override
   void initState() {
@@ -54,8 +56,6 @@ class _EnquireFormState extends State<EnquireForm> {
             return const Center(child: Text('No user details available'));
           } else {
             final userDetails = snapshot.data!;
-            // emailController.text = userDetails['email'] ?? '';
-            // phoneController.text = userDetails['phone'] ?? '';
             emailController.text = userDetails['email'] ?? '';
             phoneController.text = userDetails['phone'] ?? '';
 
