@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget enquireTextField(TextEditingController textController, String placeholder) {
+Widget enquireTextField(TextEditingController textController, String placeholder, StateSetter setState) {
   return TextFormField(
     controller: textController,
     cursorColor: const Color(0xffdc3545),
@@ -12,7 +12,9 @@ Widget enquireTextField(TextEditingController textController, String placeholder
       suffixIcon: textController.text.isNotEmpty
           ? GestureDetector(
               onTap: () {
-                textController.text = '';
+                setState(() {
+                  textController.clear();
+                });
               },
               child: const Icon(
                 Icons.clear_rounded,
@@ -45,6 +47,9 @@ Widget enquireTextField(TextEditingController textController, String placeholder
     autofocus: false,
     validator: (value) {
       return null;
+    },
+    onChanged: (value) {
+      setState(() {}); // Trigger state change on text change to update suffixIcon
     },
   );
 }

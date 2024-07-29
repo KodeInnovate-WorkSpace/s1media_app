@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -49,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       MyService(
         imagePath: "assets/royalz_hotels.jpeg",
-        title: "Royalz Hotels",
+        title: "Multi Businesses",
         subText: "Virtual tours of hotel facilities and highlighting services and guest experience",
       ),
     ];
@@ -98,9 +99,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: 120,
               ),
 
+              const Divider(),
+
               //Contact us
-              ListTile(
-                title: Text("Contact Us"),
+              const ListTile(
+                title: Text(
+                  "Contact Us",
+                  style: TextStyle(fontFamily: 'cgb'),
+                ),
               ),
 
               //Logout Button
@@ -151,7 +157,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ));
                 },
-                title: Text("Logout"),
+                leading: const Icon(
+                  Icons.logout,
+                  size: 18,
+                  color: Color(0xffdc3545),
+                ),
+                title: const Text(
+                  "Logout",
+                  style: TextStyle(fontFamily: 'cgb'),
+                ),
               ),
             ],
           ),
@@ -168,12 +182,12 @@ class _HomeScreenState extends State<HomeScreen> {
               "Our Services",
               style: TextStyle(
                 fontFamily: "cgblack",
-                fontSize: 30,
+                fontSize: 35,
               ),
             ),
             const Text(
               "At S1Media, we offer a range of services designed to showcase your business",
-              style: TextStyle(fontFamily: "cgb", fontSize: 13, color: Color(0xff8A8B8B)),
+              style: TextStyle(fontFamily: "cgm", fontSize: 15, color: Color(0xff8A8B8B)),
             ),
             const SizedBox(
               height: 25,
@@ -254,7 +268,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         service.subText,
                         style: const TextStyle(
                           color: Colors.white,
-                          fontFamily: "cgm",
+                          fontFamily: "cgb",
                         ),
                       ),
                       // Enquire button

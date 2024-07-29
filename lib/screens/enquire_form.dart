@@ -1,7 +1,9 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get/get.dart';
+import 'package:s1media_app/controller/textfield_controller.dart';
 import 'package:s1media_app/widget/enquire_text_field.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../controller/user_controller.dart';
@@ -18,9 +20,9 @@ class EnquireForm extends StatefulWidget {
 class _EnquireFormState extends State<EnquireForm> {
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-  TextEditingController serviceController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController msgController = TextEditingController();
+  TextEditingController serviceController = TextEditingController();
   UserController userObj = UserController();
 
   @override
@@ -52,6 +54,8 @@ class _EnquireFormState extends State<EnquireForm> {
             return const Center(child: Text('No user details available'));
           } else {
             final userDetails = snapshot.data!;
+            // emailController.text = userDetails['email'] ?? '';
+            // phoneController.text = userDetails['phone'] ?? '';
             emailController.text = userDetails['email'] ?? '';
             phoneController.text = userDetails['phone'] ?? '';
 
@@ -63,18 +67,27 @@ class _EnquireFormState extends State<EnquireForm> {
                   children: [
                     const Text(
                       "Send us your details, and we will get back to you",
-                      style: TextStyle(fontFamily: "cgblack", fontSize: 32),
+                      style: TextStyle(
+                        fontFamily: "cgblack",
+                        fontSize: 32,
+                      ),
                     ),
                     const SizedBox(height: 20),
-                    enquireTextField(emailController, "Enter your email address"),
-                    const SizedBox(height: 20),
-                    enquireTextField(phoneController, "Enter your phone number"),
-                    const SizedBox(height: 20),
-                    enquireTextField(serviceController, "Enter the service"),
-                    const SizedBox(height: 20),
-                    enquireTextField(nameController, "Enter your name"),
-                    const SizedBox(height: 20),
-                    enquireTextField(msgController, "Message"),
+                    StatefulBuilder(builder: (context, setState) {
+                      return Column(
+                        children: [
+                          enquireTextField(emailController, "Enter your email address", setState),
+                          const SizedBox(height: 20),
+                          enquireTextField(phoneController, "Enter your phone number", setState),
+                          const SizedBox(height: 20),
+                          enquireTextField(serviceController, "Enter the service", setState),
+                          const SizedBox(height: 20),
+                          enquireTextField(nameController, "Enter your name", setState),
+                          const SizedBox(height: 20),
+                          enquireTextField(msgController, "Message", setState),
+                        ],
+                      );
+                    }),
                     const SizedBox(height: 20),
                     Container(
                       decoration: BoxDecoration(color: const Color(0xffdc3545), borderRadius: BorderRadius.circular(10)),
@@ -100,11 +113,11 @@ class _EnquireFormState extends State<EnquireForm> {
   }
 
   Future<void> sendWhatsAppMessage() async {
-    String email = emailController.text;
-    String phone = phoneController.text;
+    String email = emailController.value.text;
+    String phone = phoneController.value.text;
+    String name = nameController.value.text;
+    String message = msgController.value.text;
     String service = serviceController.text;
-    String name = nameController.text;
-    String message = msgController.text;
 
     if (email.isEmpty || phone.isEmpty || service.isEmpty || name.isEmpty || message.isEmpty) {
       // Show an error message or do something to inform the user
@@ -113,7 +126,7 @@ class _EnquireFormState extends State<EnquireForm> {
     }
 
     String fullMessage = "Email: $email\nPhone: $phone\nService: $service\nName: $name\n $message";
-    String phoneNumber = ""; // Replace with the recipient's phone number
+    String phoneNumber = dotenv.env['RECEIVER_PHONE']!; // Replace with the recipient's phone number
 
     // Construct the WhatsApp URL
     String whatsappUrl = "https://wa.me/$phoneNumber?text=${Uri.encodeComponent(fullMessage)}";
