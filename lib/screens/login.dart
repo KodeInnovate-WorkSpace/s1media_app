@@ -67,7 +67,8 @@ class _LoginScreenState extends State<LoginScreen> {
               const Center(
                 child: Text(
                   "Login",
-                  style: TextStyle(fontSize: 30, fontFamily: 'Satoshi-Black'),
+                  // style: TextStyle(fontSize: 30, fontFamily: 'Satoshi-Black'),
+                  style: TextStyle(fontSize: 35, fontFamily: 'cgblack'),
                 ),
               ),
               Padding(
@@ -104,7 +105,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   'Email',
                                   style: TextStyle(
                                     color: Colors.black,
-                                    fontFamily: 'Satoshi-Bold',
+                                    // fontFamily: 'Satoshi-Bold',
+                                    fontFamily: 'cgb',
                                     fontSize: 16,
                                   ),
                                 ),
@@ -118,7 +120,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     controller: emailController,
                                     cursorColor: const Color(0xffdc3545),
                                     keyboardType: TextInputType.emailAddress,
-                                    style: const TextStyle(color: Colors.grey, fontFamily: 'Satoshi-Medium'),
+                                    // style: const TextStyle(color: Colors.grey, fontFamily: 'Satoshi-Medium'),
+                                    style: const TextStyle(color: Colors.grey, fontFamily: 'cgm'),
                                     decoration: const InputDecoration(
                                       border: InputBorder.none,
                                       focusedBorder: InputBorder.none,
@@ -128,7 +131,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                       filled: true,
                                       fillColor: Colors.white,
                                       hintText: "Enter your email address",
-                                      hintStyle: TextStyle(color: Color(0xffdcdcdc), fontFamily: 'Satoshi-Medium'),
+                                      // hintStyle: TextStyle(color: Color(0xffdcdcdc), fontFamily: 'Satoshi-Medium'),
+                                      hintStyle: TextStyle(color: Color(0xffdcdcdc), fontFamily: 'cgm'),
                                     ),
                                     autofocus: true,
                                     validator: (value) {
@@ -161,12 +165,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
                             await authObj.saveUser(emailController.text);
 
-                            // Reset loginLoading after navigation
                             setState(() {
                               loginLoading = false;
                             });
                           } else {
-                            log("Email or phone is not valid");
+                            Get.snackbar("Email is not valid", "Try correcting the email address");
+                            log("Email is not valid");
                           }
                         },
                         style: ButtonStyle(
@@ -200,7 +204,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: Center(
                                   child: Text(
                                     "Next",
-                                    style: TextStyle(color: Colors.white, fontSize: 16.0, fontFamily: 'Satoshi-Black'),
+                                    // style: TextStyle(color: Colors.white, fontSize: 16.0, fontFamily: 'Satoshi-Black'),
+                                    style: TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'cgblack'),
                                   ),
                                 ),
                               ),

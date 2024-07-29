@@ -7,10 +7,10 @@ import 'package:s1media_app/screens/home.dart';
 import 'package:s1media_app/screens/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'controller/auth_controller.dart';
-// import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
-  // await dotenv.load(fileName: 'lib/.env');
+  await dotenv.load(fileName: "assets/.env");
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 

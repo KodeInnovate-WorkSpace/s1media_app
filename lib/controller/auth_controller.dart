@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:s1media_app/screens/phone.dart';
@@ -19,8 +20,8 @@ class AuthController {
   String get email => textEmailController.text;
 
   Future<void> sendMail(String receiverEmail, String code) async {
-    String username = "";
-    String password = "";
+    String username = dotenv.env['EMAIL']!;
+    String password = dotenv.env['APP_PASSWORD']!;
 
     final smtpServer = gmail(username, password);
 
