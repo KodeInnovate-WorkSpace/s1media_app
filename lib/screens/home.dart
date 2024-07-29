@@ -188,64 +188,90 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Our Service
-            AnimatedOpacity(
-              opacity: _isTextVisible ? 1.0 : 0.0,
-              duration: const Duration(seconds: 1),
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Our Services",
-                    style: TextStyle(
-                      fontFamily: "cgblack",
-                      fontSize: 35,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Our Service
+              AnimatedOpacity(
+                opacity: _isTextVisible ? 1.0 : 0.0,
+                duration: const Duration(seconds: 1),
+                child: const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Our Services",
+                      style: TextStyle(
+                        fontFamily: "cgblack",
+                        fontSize: 35,
+                      ),
                     ),
-                  ),
-                  Text(
-                    "At S1Media, we offer a range of services designed to showcase your business",
-                    style: TextStyle(fontFamily: "cgm", fontSize: 15, color: Color(0xff8A8B8B)),
-                  ),
-                ],
+                    Text(
+                      "At S1Media, we offer a range of services designed to showcase your business",
+                      style: TextStyle(fontFamily: "cgm", fontSize: 15, color: Color(0xff8A8B8B)),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 25,
-            ),
-            //Slider
-            CarouselSlider(
-                items: _items,
-                options: CarouselOptions(
-                  height: 380.0,
-                  autoPlay: false,
-                  autoPlayCurve: Curves.fastOutSlowIn,
-                  enableInfiniteScroll: false,
-                  viewportFraction: 1,
-                  enlargeCenterPage: true,
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      _current = index;
-                    });
-                  },
-                )),
-            // Dots
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: _items.map((item) {
-                int index = _items.indexOf(item);
-                return Container(
-                  width: 8.0,
-                  height: 8.0,
-                  margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-                  decoration: BoxDecoration(shape: BoxShape.circle, color: _current == index ? const Color(0xffBA1D17) : const Color(0xffD9D9D9)),
-                );
-              }).toList(),
-            ),
-          ],
+              const SizedBox(
+                height: 25,
+              ),
+              //Slider
+              CarouselSlider(
+                  items: _items,
+                  options: CarouselOptions(
+                    height: 380.0,
+                    autoPlay: false,
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    enableInfiniteScroll: false,
+                    viewportFraction: 1,
+                    enlargeCenterPage: true,
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        _current = index;
+                      });
+                    },
+                  )),
+              // Dots
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: _items.map((item) {
+                  int index = _items.indexOf(item);
+                  return Container(
+                    width: 8.0,
+                    height: 8.0,
+                    margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                    decoration: BoxDecoration(shape: BoxShape.circle, color: _current == index ? const Color(0xffBA1D17) : const Color(0xffD9D9D9)),
+                  );
+                }).toList(),
+              ),
+
+              const SizedBox(
+                height: 25,
+              ),
+
+              const Text(
+                "Why Choose Us?",
+                style: TextStyle(
+                  fontFamily: "cgblack",
+                  fontSize: 32,
+                ),
+              ),
+              const Text(
+                "We do not charge for shooting your property or business",
+                style: TextStyle(fontFamily: "cgm", fontSize: 15, color: Color(0xff8A8B8B)),
+              ),
+              const Text(
+                "Enjoy two years of free marketing on our YouTube channel and social media",
+                style: TextStyle(fontFamily: "cgm", fontSize: 15, color: Color(0xff8A8B8B)),
+              ),
+              const Text(
+                "After two years, continue your marketing",
+                style: TextStyle(fontFamily: "cgm", fontSize: 15, color: Color(0xff8A8B8B)),
+              ),
+            ],
+          ),
         ),
       ),
     );

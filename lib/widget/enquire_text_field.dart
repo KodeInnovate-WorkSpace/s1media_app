@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget enquireTextField(TextEditingController textController, String placeholder, StateSetter setState) {
+Widget enquireTextField(TextEditingController textController, String placeholder, StateSetter setState, String? Function(String?)? validator) {
   return TextFormField(
     controller: textController,
     cursorColor: const Color(0xffdc3545),
@@ -45,9 +45,7 @@ Widget enquireTextField(TextEditingController textController, String placeholder
       ),
     ),
     autofocus: false,
-    validator: (value) {
-      return null;
-    },
+    validator: validator,
     onChanged: (value) {
       setState(() {}); // Trigger state change on text change to update suffixIcon
     },
