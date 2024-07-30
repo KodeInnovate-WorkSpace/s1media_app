@@ -110,6 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  // int _selectedItemPosition = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -157,45 +158,49 @@ class _HomeScreenState extends State<HomeScreen> {
 
               if (userType == 1)
                 //Admin
-                InkWell(
-                  onTap: () {},
-                  splashColor: const Color(0xffdc3545),
-                  child: const ListTile(
-                    leading: Icon(
-                      Icons.data_object_sharp,
-                      // size: 18,
-                      color: Color(0xffdc3545),
-                    ),
-                    title: Text(
-                      "Admin",
-                      style: TextStyle(fontFamily: 'cgb', fontSize: 18),
-                    ),
-                  ),
-                ),
-
-              //Contact us
-              InkWell(
-                onTap: () {
-                  Get.to(() => const ContactScreen());
-                },
-                splashColor: const Color(0xffdc3545),
-                // splashColor: const Color.fromRGBO(255, 20, 0, 100),
-                child: const ListTile(
+                const ListTile(
                   leading: Icon(
-                    Icons.near_me,
+                    Icons.data_object_sharp,
                     // size: 18,
                     color: Color(0xffdc3545),
                   ),
                   title: Text(
-                    "Contact Us",
+                    "Admin",
                     style: TextStyle(fontFamily: 'cgb', fontSize: 18),
                   ),
+                ),
+
+              //Contact us
+              ListTile(
+                onTap: () {
+                  Get.to(() => const ContactScreen());
+                },
+                leading: const Icon(
+                  Icons.near_me_outlined,
+                  // size: 18,
+                  color: Color(0xffdc3545),
+                ),
+                title: const Text(
+                  "Contact Us",
+                  style: TextStyle(fontFamily: 'cgb', fontSize: 18),
+                ),
+              ),
+
+              //About us
+              const ListTile(
+                leading: Icon(
+                  Icons.info_outline,
+                  // size: 18,
+                  color: Color(0xffdc3545),
+                ),
+                title: Text(
+                  "About Us",
+                  style: TextStyle(fontFamily: 'cgb', fontSize: 18),
                 ),
               ),
 
               //Logout Button
-              InkWell(
-                splashColor: const Color(0xffdc3545),
+              ListTile(
                 onTap: () {
                   showDialog(
                       context: context,
@@ -242,16 +247,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ));
                 },
-                child: const ListTile(
-                  leading: Icon(
-                    Icons.logout,
-                    // size: 18,
-                    color: Color(0xffdc3545),
-                  ),
-                  title: Text(
-                    "Logout",
-                    style: TextStyle(fontFamily: 'cgb', fontSize: 18),
-                  ),
+                leading: const Icon(
+                  Icons.logout,
+                  // size: 18,
+                  color: Color(0xffdc3545),
+                ),
+                title: const Text(
+                  "Logout",
+                  style: TextStyle(fontFamily: 'cgb', fontSize: 18),
                 ),
               ),
             ],
@@ -259,6 +262,29 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       backgroundColor: Colors.white,
+      // bottomNavigationBar: SnakeNavigationBar.color(
+      //   behaviour: SnakeBarBehaviour.pinned,
+      //   snakeShape: SnakeShape.circle,
+      //   shape: const RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.all(Radius.circular(25)),
+      //   ),
+      //   padding: const EdgeInsets.all(10),
+      //   backgroundColor: Colors.white,
+      //   snakeViewColor: const Color(0xffBA1D17),
+      //   // selectedItemColor:  Colors.white,
+      //   selectedItemColor: SnakeShape.circle == SnakeShape.indicator ? const Color(0xffBA1D17) : null,
+      //   unselectedItemColor: Colors.grey.shade800,
+      //   showUnselectedLabels: false,
+      //   showSelectedLabels: false,
+      //   currentIndex: _selectedItemPosition,
+      //   onTap: (index) => setState(() => _selectedItemPosition = index),
+      //   items: const [
+      //     BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: 'home'),
+      //     BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: 'home'),
+      //     BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: 'home'),
+      //     BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: 'home'),
+      //   ],
+      // ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: SingleChildScrollView(
