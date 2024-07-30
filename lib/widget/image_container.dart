@@ -9,7 +9,7 @@ import '../screens/video.dart';
 Widget buildImageContainer(MyService service, List<MyService> myServices) {
   return GestureDetector(
     onTap: () {
-      Get.to(() => const VideoScreen());
+      Get.to(() => VideoScreen(videos: service.videoUrls));
     },
     child: Container(
       width: double.infinity,

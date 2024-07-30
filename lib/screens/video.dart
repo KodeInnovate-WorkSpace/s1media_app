@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class VideoScreen extends StatefulWidget {
-  const VideoScreen({super.key});
+  final List<String> videos;
+  const VideoScreen({super.key, required this.videos});
 
   @override
   State<VideoScreen> createState() => _VideoScreenState();
@@ -46,6 +47,16 @@ class _VideoScreenState extends State<VideoScreen> {
             YoutubePlayer(
               controller: videoController,
               aspectRatio: 16 / 9,
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: widget.videos.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(widget.videos[index]),
+                  );
+                },
+              ),
             ),
           ],
         ),
