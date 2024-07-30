@@ -30,53 +30,50 @@ class AuthController {
       ..recipients.add(receiverEmail)
       ..subject = 'Verification Code: $code'
       ..html = '''
-    <div
-      style="
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 45px 30px 60px;
-      background: #f4f7ff;
-      background-image: url('https://archisketch-resources.s3.ap-northeast-2.amazonaws.com/vrstyler/1661497957196_595865/email-template-background-banner');
-      background-repeat: no-repeat;
-      background-size: 800px 452px;
-      background-position: top center;
-      font-size: 14px;
-      color: #434343;
-      "
-    >
-      <main>
-        <div
-          style="
-          margin: 0;
-          margin-top: 70px;
-          padding: 92px 30px 115px;
-          background: #ffffff;
-          border-radius: 30px;
-          text-align: center;
-          "
-        >
-          <div style="width: 100%; max-width: 489px; margin: 0 auto;">
-            <h1 style="margin: 0; font-size: 24px; font-weight: 500; color: #1f1f1f;">Your OTP</h1>
-            <p style="margin: 0; margin-top: 60px; font-size: 40px; font-weight: 600; letter-spacing: 25px; color: #ba3d4f;">$code</p>
-          </div>
-        </div>
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 
-        <p
-          style="
-          max-width: 400px;
-          margin: 0 auto;
-          margin-top: 90px;
-          text-align: center;
-          font-weight: 500;
-          color: #8c8c8c;
-          "
-        >
-          Need help? Ask at
-          <a href="mailto:info@kodeinnovate.in" style="color: #499fb6; text-decoration: none;">info@kodeinnovate.in</a>
-          
-        </p>
-      </main>
-    </div>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify your login</title>
+  <!--[if mso]><style type="text/css">body, table, td, a { font-family: Arial, Helvetica, sans-serif !important; }</style><![endif]-->
+</head>
+
+<body style="font-family: Helvetica, Arial, sans-serif; margin: 0px; padding: 0px; background-color: #ffffff;">
+  <table role="presentation"
+    style="width: 100%; border-collapse: collapse; border: 0px; border-spacing: 0px; font-family: Arial, Helvetica, sans-serif; background-color: rgb(220, 53, 69);">
+    <tbody>
+      <tr>
+        <td align="center" style="padding: 1rem 2rem; vertical-align: top; width: 100%;">
+          <table role="presentation" style="max-width: 600px; border-collapse: collapse; border: 0px; border-spacing: 0px; text-align: left;">
+            <tbody>
+              <tr>
+                <td style="padding: 40px 0px 0px;">
+                  <div style="text-align: left;">
+                    <!---->
+                  </div>
+                  <div style="padding: 20px; background-color: rgb(255, 255, 255);">
+                    <div style="color: rgb(0, 0, 0); text-align: center;">
+                      <h1 style="margin: 1rem 0">Verification code</h1>
+                      <p style="padding-bottom: 16px">Please use the verification code below to login.</p>
+                      <p style="padding-bottom: 16px"><strong style="font-size: 130%">$code</strong></p>
+                      <p style="padding-bottom: 16px">If you didn’t request this, you can ignore this email.</p>
+                      <p style="padding-bottom: 16px">Thanks,<br>S1Media</p>
+                    </div>
+                  </div>
+                  <div style="padding-top: 20px; color: rgb(153, 153, 153); text-align: center;"></div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+
+</html>
     ''';
 
     try {

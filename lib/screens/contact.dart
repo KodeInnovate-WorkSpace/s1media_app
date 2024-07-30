@@ -139,7 +139,7 @@ class _ContactScreenState extends State<ContactScreen> {
                             onPressed: () async {
                               if (_formkey.currentState!.validate()) {
                                 HapticFeedback.selectionClick();
-                                await sendWhatsAppMessage();
+                                await sendContactMsg();
                               } else {
                                 Get.snackbar("Empty Field", "Please fill necessary details to continue", duration: const Duration(milliseconds: 600));
                               }
@@ -160,7 +160,7 @@ class _ContactScreenState extends State<ContactScreen> {
     );
   }
 
-  Future<void> sendWhatsAppMessage() async {
+  Future<void> sendContactMsg() async {
     String email = emailController.value.text;
     String phone = phoneController.value.text;
     String fname = fnameController.value.text;

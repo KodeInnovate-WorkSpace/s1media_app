@@ -75,27 +75,11 @@ class _VideoScreenState extends State<VideoScreen> {
                   final controller = videoControllers[index];
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Container(
-                      decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10)), color: Colors.green),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          YoutubePlayer(
-                            controller: controller,
-                            showVideoProgressIndicator: true,
-                            progressIndicatorColor: Colors.blueAccent,
-                            aspectRatio: 16 / 9,
-                          ),
-                          const Row(
-                            children: [
-                              Text(
-                                "Video Title",
-                                style: TextStyle(fontSize: 20),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                    child: YoutubePlayer(
+                      controller: controller,
+                      showVideoProgressIndicator: true,
+                      progressIndicatorColor: Colors.blueAccent,
+                      aspectRatio: 16 / 9,
                     ),
                   );
                 },
