@@ -78,27 +78,27 @@ class _ContactScreenState extends State<ContactScreen> {
                         return Column(
                           children: [
                             //First Name
-                            enquireTextField(fnameController, "Enter your first name", setState, (value) {
+                            enquireTextField(fnameController, "First Name", setState, (value) {
                               if (value == null || value.isEmpty) {
-                                return 'First name is empty';
+                                return 'Please enter your firstname';
                               }
                               return null;
                             }),
                             const SizedBox(height: 20),
 
                             //Last Name
-                            enquireTextField(lnameController, "Enter your last name", setState, (value) {
+                            enquireTextField(lnameController, "Last Name", setState, (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Last name is empty';
+                                return 'Please enter your lastname';
                               }
                               return null;
                             }),
                             const SizedBox(height: 20),
 
                             //Email
-                            enquireTextField(emailController, "Enter your email address", setState, (value) {
+                            enquireTextField(emailController, "Email", setState, (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Email is empty';
+                                return 'Please enter your email';
                               }
                               if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
                                 return 'Enter a valid email';
@@ -108,9 +108,9 @@ class _ContactScreenState extends State<ContactScreen> {
                             const SizedBox(height: 20),
 
                             //Phone
-                            enquireTextField(phoneController, "Enter your phone number", setState, (value) {
+                            enquireTextField(phoneController, "Phone Number", setState, (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Phone number is empty';
+                                return 'Please enter your phone number';
                               }
                               if (!RegExp(r'^\d{10}$').hasMatch(value)) {
                                 return 'Enter a valid phone number';
@@ -124,7 +124,7 @@ class _ContactScreenState extends State<ContactScreen> {
                             //Message
                             enquireTextField(msgController, "Message", setState, (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Message is empty';
+                                return 'Please enter a message';
                               }
                               return null;
                             }),

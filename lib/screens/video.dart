@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -55,7 +54,6 @@ class _VideoScreenState extends State<VideoScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
-        title: Text("Service Name"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -64,7 +62,7 @@ class _VideoScreenState extends State<VideoScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              "See how we work and what we deliver",
+              "See our work and what we deliver",
               style: TextStyle(
                 fontFamily: "cgblack",
                 fontSize: 32,
@@ -77,11 +75,27 @@ class _VideoScreenState extends State<VideoScreen> {
                   final controller = videoControllers[index];
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: YoutubePlayer(
-                      controller: controller,
-                      showVideoProgressIndicator: true,
-                      progressIndicatorColor: Colors.blueAccent,
-                      aspectRatio: 16 / 9,
+                    child: Container(
+                      decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10)), color: Colors.green),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          YoutubePlayer(
+                            controller: controller,
+                            showVideoProgressIndicator: true,
+                            progressIndicatorColor: Colors.blueAccent,
+                            aspectRatio: 16 / 9,
+                          ),
+                          const Row(
+                            children: [
+                              Text(
+                                "Video Title",
+                                style: TextStyle(fontSize: 20),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 },

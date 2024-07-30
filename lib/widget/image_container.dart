@@ -9,7 +9,10 @@ import '../screens/video.dart';
 Widget buildImageContainer(MyService service, List<MyService> myServices) {
   return GestureDetector(
     onTap: () {
-      Get.to(() => VideoScreen(videos: service.videoUrls));
+      Get.to(() => VideoScreen(videos: service.videoUrls),
+        transition: Transition.fadeIn,
+        duration: const Duration(milliseconds: 800),
+      );
     },
     child: Container(
       width: double.infinity,

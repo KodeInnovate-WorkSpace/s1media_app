@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:get/get.dart';
 import 'package:s1media_app/widget/enquire_text_field.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../controller/user_controller.dart';
@@ -83,24 +82,24 @@ class _EnquireFormState extends State<EnquireForm> {
                         return Column(
                           children: [
                             //Email
-                            enquireTextField(emailController, "Enter your email address", setState, (value) {
+                            enquireTextField(emailController, "Email", setState, (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Email is empty';
+                                return 'Please enter your email';
                               }
                               if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                                return 'Enter a valid email';
+                                return 'Please enter a valid email';
                               }
                               return null;
                             }),
                             const SizedBox(height: 20),
 
                             //Phone
-                            enquireTextField(phoneController, "Enter your phone number", setState, (value) {
+                            enquireTextField(phoneController, "Phone Number", setState, (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Phone number is empty';
+                                return 'Please enter your phone number';
                               }
                               if (!RegExp(r'^\d{10}$').hasMatch(value)) {
-                                return 'Enter a valid phone number';
+                                return 'Please enter a valid phone number';
                               }
                               return null;
                             }),
@@ -157,9 +156,9 @@ class _EnquireFormState extends State<EnquireForm> {
                             const SizedBox(height: 20),
 
                             //Name
-                            enquireTextField(nameController, "Enter your name", setState, (value) {
+                            enquireTextField(nameController, "Name", setState, (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Name is empty';
+                                return 'Please enter your name';
                               }
                               return null;
                             }),
@@ -168,7 +167,7 @@ class _EnquireFormState extends State<EnquireForm> {
                             //Message
                             enquireTextField(msgController, "Message", setState, (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Message is empty';
+                                return 'Please enter a message';
                               }
                               return null;
                             }),
@@ -184,8 +183,6 @@ class _EnquireFormState extends State<EnquireForm> {
                               if (_formkey.currentState!.validate()) {
                                 HapticFeedback.selectionClick();
                                 await sendWhatsAppMessage();
-                              } else {
-                                Get.snackbar("Empty Field", "Please fill necessary details to continue", duration: const Duration(milliseconds: 600));
                               }
                             },
                             child: const Text(
@@ -210,12 +207,6 @@ class _EnquireFormState extends State<EnquireForm> {
     String name = nameController.value.text;
     String message = msgController.value.text;
     String service = serviceController.text;
-
-    // if (email.isEmpty || phone.isEmpty || service.isEmpty || name.isEmpty || message.isEmpty) {
-    //   // Get.snackbar("Empty Field", "Please fill necessary details to continue", duration: const Duration(milliseconds: 600));
-    //   log('Please fill all the fields');
-    //   return;
-    // }
 
     String fullMessage = "Email: $email\nPhone: $phone\nService: $service\nName: $name\n $message";
     String phoneNumber = dotenv.env['RECEIVER_PHONE']!; // Replace with the recipient's phone number
