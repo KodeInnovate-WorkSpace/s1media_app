@@ -45,7 +45,6 @@ flutter:
 
   assets:
     - assets/
-    - assets/login_bg.png
     - assets/.env
 
   fonts:

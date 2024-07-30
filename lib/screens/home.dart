@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:s1media_app/screens/admin.dart';
 import 'package:s1media_app/screens/contact.dart';
 import 'package:s1media_app/screens/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -158,13 +159,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
               if (userType == 1)
                 //Admin
-                const ListTile(
-                  leading: Icon(
-                    Icons.data_object_sharp,
-                    // size: 18,
-                    color: Color(0xffdc3545),
+                ListTile(
+                  onTap: () {
+                    Get.to(
+                      () => const AdminScreen(),
+                      transition: Transition.rightToLeft,
+                      duration: const Duration(milliseconds: 600),
+                    );
+                  },
+                  leading: Image.asset(
+                    "assets/admin.png",
+                    color: const Color(0xffdc3545),
+                    width: 24,
                   ),
-                  title: Text(
+                  title: const Text(
                     "Admin",
                     style: TextStyle(fontFamily: 'cgb', fontSize: 18),
                   ),
@@ -173,12 +181,16 @@ class _HomeScreenState extends State<HomeScreen> {
               //Contact us
               ListTile(
                 onTap: () {
-                  Get.to(() => const ContactScreen());
+                  Get.to(
+                    () => const ContactScreen(),
+                    transition: Transition.rightToLeft,
+                    duration: const Duration(milliseconds: 600),
+                  );
                 },
-                leading: const Icon(
-                  Icons.near_me_outlined,
-                  // size: 18,
-                  color: Color(0xffdc3545),
+                leading: Image.asset(
+                  "assets/contact_us.png",
+                  color: const Color(0xffdc3545),
+                  width: 22,
                 ),
                 title: const Text(
                   "Contact Us",
@@ -187,13 +199,13 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
 
               //About us
-              const ListTile(
-                leading: Icon(
-                  Icons.info_outline,
-                  // size: 18,
-                  color: Color(0xffdc3545),
+              ListTile(
+                leading: Image.asset(
+                  "assets/about.png",
+                  color: const Color(0xffdc3545),
+                  width: 20,
                 ),
-                title: Text(
+                title: const Text(
                   "About Us",
                   style: TextStyle(fontFamily: 'cgb', fontSize: 18),
                 ),
@@ -247,10 +259,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ));
                 },
-                leading: const Icon(
-                  Icons.logout,
-                  // size: 18,
-                  color: Color(0xffdc3545),
+                leading: Image.asset(
+                  "assets/logout.png",
+                  color: const Color(0xffdc3545),
+                  width: 20,
                 ),
                 title: const Text(
                   "Logout",
