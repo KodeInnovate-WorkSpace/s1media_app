@@ -39,16 +39,27 @@ class _HomeScreenState extends State<HomeScreen> {
         title: "Deal Done Brokers",
         subText: "Video tours of properties and highlighting unique features and amenities",
         videoUrls: [
-          "Link 1",
-          "Link 2",
-          "Link 3",
-          "Link 4",
+          "https://www.youtube.com/watch?v=RwU7YY6emYc",
+          "https://www.youtube.com/watch?v=ScMzIvxBSi4",
+          "https://www.youtube.com/watch?v=FsseeXyjnF0",
+          "https://www.youtube.com/watch?v=u31qwQUeGuM",
         ],
       ),
       MyService(
         imagePath: "assets/the_restro.jpeg",
         title: "The Restro",
         subText: "Capturing the ambiance & culinary delights and showcasing special dishes & events",
+        videoUrls: [
+          "https://www.youtube.com/watch?v=ScMzIvxBSi4",
+          "https://www.youtube.com/watch?v=u31qwQUeGuM",
+          "https://www.youtube.com/watch?v=RwU7YY6emYc",
+          "https://www.youtube.com/watch?v=FsseeXyjnF0",
+        ],
+      ),
+      MyService(
+        imagePath: "assets/autoz_plus.png",
+        title: "Autoz Plus",
+        subText: "Updates on new and old cars and bikes, buy and sell opportunities, market trends",
         videoUrls: [
           "Link 5",
           "Link 6",
@@ -57,22 +68,26 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       MyService(
-        imagePath: "assets/autoz_plus.png",
-        title: "Autoz Plus",
-        subText: "Updates on new and old cars and bikes, buy and sell opportunities, market trends",
-        videoUrls: [],
-      ),
-      MyService(
         imagePath: "assets/the_foodizz.jpeg",
         title: "The Foodizz",
         subText: "Step-by-step cooking videos and featuring professional chefs and home cooks",
-        videoUrls: [],
+        videoUrls: [
+          "Link 5",
+          "Link 6",
+          "Link 7",
+          "Link 8",
+        ],
       ),
       MyService(
         imagePath: "assets/royalz_hotels.jpeg",
         title: "Multi Businesses",
         subText: "Virtual tours of hotel facilities and highlighting services and guest experience",
-        videoUrls: [],
+        videoUrls: [
+          "Link 5",
+          "Link 6",
+          "Link 7",
+          "Link 8",
+        ],
       ),
     ];
 
