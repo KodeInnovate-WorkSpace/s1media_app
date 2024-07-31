@@ -102,132 +102,162 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       drawer: Drawer(
         backgroundColor: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 50),
-          child: Column(
-            children: [
-              //logo
-              Image.asset(
-                "assets/full_logo.png",
-                width: 120,
-              ),
-              const SizedBox(
-                height: 30,
-              ),
+        child: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(image: AssetImage("assets/pattern2.jpg"), fit: BoxFit.contain, alignment: Alignment.topRight),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 50),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    //logo
+                    // Image.asset(
+                    //   "assets/full_logo.png",
+                    //   width: 120,
+                    // ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ListTile(
+                      leading: Image.asset(
+                        "assets/full_logo.png",
+                        width: 120,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
 
-              if (userType == 1)
-                //Admin
-                ListTile(
-                  onTap: () {
-                    Get.to(
-                      () => const AdminScreen(),
-                      transition: Transition.rightToLeft,
-                      duration: const Duration(milliseconds: 400),
-                    );
-                  },
-                  leading: Image.asset(
-                    "assets/admin.png",
-                    color: const Color(0xffdc3545),
-                    width: 24,
-                  ),
-                  title: const Text(
-                    "Admin",
-                    style: TextStyle(fontFamily: 'cgb', fontSize: 18),
-                  ),
-                ),
+                    if (userType == 1)
+                      //Admin
+                      ListTile(
+                        onTap: () {
+                          Get.to(
+                            () => const AdminScreen(),
+                            transition: Transition.rightToLeft,
+                            duration: const Duration(milliseconds: 400),
+                          );
+                        },
+                        leading: Image.asset(
+                          "assets/admin.png",
+                          color: const Color(0xffdc3545),
+                          width: 24,
+                        ),
+                        title: const Text(
+                          "Admin",
+                          style: TextStyle(fontFamily: 'cgb', fontSize: 18),
+                        ),
+                      ),
 
-              //Contact us
-              ListTile(
-                onTap: () {
-                  Get.to(
-                    () => const ContactScreen(),
-                    transition: Transition.rightToLeft,
-                    duration: const Duration(milliseconds: 400),
-                  );
-                },
-                leading: Image.asset(
-                  "assets/contact_us.png",
-                  color: const Color(0xffdc3545),
-                  width: 22,
-                ),
-                title: const Text(
-                  "Contact Us",
-                  style: TextStyle(fontFamily: 'cgb', fontSize: 18),
-                ),
-              ),
+                    //Contact us
+                    ListTile(
+                      onTap: () {
+                        Get.to(
+                          () => const ContactScreen(),
+                          transition: Transition.rightToLeft,
+                          duration: const Duration(milliseconds: 400),
+                        );
+                      },
+                      leading: Image.asset(
+                        "assets/contact_us.png",
+                        color: const Color(0xffdc3545),
+                        width: 22,
+                      ),
+                      title: const Text(
+                        "Contact Us",
+                        style: TextStyle(fontFamily: 'cgb', fontSize: 18),
+                      ),
+                    ),
 
-              //About us
-              ListTile(
-                leading: Image.asset(
-                  "assets/about.png",
-                  color: const Color(0xffdc3545),
-                  width: 20,
+                    //About us
+                    ListTile(
+                      leading: Image.asset(
+                        "assets/about.png",
+                        color: const Color(0xffdc3545),
+                        width: 20,
+                      ),
+                      title: const Text(
+                        "About Us",
+                        style: TextStyle(fontFamily: 'cgb', fontSize: 18),
+                      ),
+                    ),
+                  ],
                 ),
-                title: const Text(
-                  "About Us",
-                  style: TextStyle(fontFamily: 'cgb', fontSize: 18),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    //User email
+                    ListTile(
+                      leading: const Icon(Icons.person),
+                      title: Text(authObj.email),
+                    ),
+                    //Logout Button
+                    ListTile(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  backgroundColor: Colors.white,
+                                  title: const Text(
+                                    "Logout",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  content: const Text(
+                                    "Are you sure you want to logout?",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  actions: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        TextButton(
+                                            onPressed: () => Navigator.of(context).pop(),
+                                            style: ButtonStyle(
+                                              overlayColor: WidgetStateProperty.all(Colors.red[900]),
+                                            ),
+                                            child: const Text(
+                                              "No",
+                                              style: TextStyle(
+                                                color: Color(0xffEF4B4B),
+                                              ),
+                                            )),
+                                        TextButton(
+                                            onPressed: () async {
+                                              SharedPreferences prefs = await SharedPreferences.getInstance();
+                                              await prefs.remove('isLoggedIn');
+                                              Get.offAll(() => const LoginScreen());
+                                            },
+                                            style: ButtonStyle(
+                                              overlayColor: WidgetStateProperty.all(Colors.grey[700]),
+                                            ),
+                                            child: const Text(
+                                              "Yes",
+                                              style: TextStyle(color: Colors.black),
+                                            )),
+                                      ],
+                                    )
+                                  ],
+                                ));
+                      },
+                      leading: Image.asset(
+                        "assets/logout.png",
+                        color: const Color(0xffdc3545),
+                        width: 20,
+                      ),
+                      title: const Text(
+                        "Logout",
+                        style: TextStyle(fontFamily: 'cgb', fontSize: 18),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-
-              //Logout Button
-              ListTile(
-                onTap: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                            backgroundColor: Colors.white,
-                            title: const Text(
-                              "Logout",
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            content: const Text(
-                              "Are you sure you want to logout?",
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            actions: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  TextButton(
-                                      onPressed: () => Navigator.of(context).pop(),
-                                      style: ButtonStyle(
-                                        overlayColor: WidgetStateProperty.all(Colors.red[900]),
-                                      ),
-                                      child: const Text(
-                                        "No",
-                                        style: TextStyle(
-                                          color: Color(0xffEF4B4B),
-                                        ),
-                                      )),
-                                  TextButton(
-                                      onPressed: () async {
-                                        SharedPreferences prefs = await SharedPreferences.getInstance();
-                                        await prefs.remove('isLoggedIn');
-                                        Get.offAll(() => const LoginScreen());
-                                      },
-                                      style: ButtonStyle(
-                                        overlayColor: WidgetStateProperty.all(Colors.grey[700]),
-                                      ),
-                                      child: const Text(
-                                        "Yes",
-                                        style: TextStyle(color: Colors.black),
-                                      )),
-                                ],
-                              )
-                            ],
-                          ));
-                },
-                leading: Image.asset(
-                  "assets/logout.png",
-                  color: const Color(0xffdc3545),
-                  width: 20,
-                ),
-                title: const Text(
-                  "Logout",
-                  style: TextStyle(fontFamily: 'cgb', fontSize: 18),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
