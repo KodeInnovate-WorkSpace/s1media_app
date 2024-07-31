@@ -20,21 +20,21 @@ class _VideoScreenState extends State<VideoScreen> {
 
     videoControllers = widget.videos
         .map((url) {
-          final videoId = YoutubePlayer.convertUrlToId(url);
-          if (videoId == null) {
-            logger.e("Invalid URL: $url");
-            return null;
-          }
-          return YoutubePlayerController(
-            initialVideoId: videoId,
-            flags: const YoutubePlayerFlags(
-              hideControls: false,
-              showLiveFullscreenButton: true,
-              loop: false,
-              autoPlay: false,
-            ),
-          );
-        })
+      final videoId = YoutubePlayer.convertUrlToId(url);
+      if (videoId == null) {
+        logger.e("Invalid URL: $url");
+        return null;
+      }
+      return YoutubePlayerController(
+        initialVideoId: videoId,
+        flags: const YoutubePlayerFlags(
+          hideControls: false,
+          showLiveFullscreenButton: true,
+          loop: false,
+          autoPlay: false,
+        ),
+      );
+    })
         .whereType<YoutubePlayerController>()
         .toList();
   }

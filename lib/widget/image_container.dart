@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -22,7 +23,8 @@ Widget buildImageContainer(MyService service, List<MyService> myServices) {
         borderRadius: BorderRadius.circular(45.0),
         color: Colors.grey[100],
         image: DecorationImage(
-          image: AssetImage(service.imagePath),
+          image: NetworkImage(service.imagePath),
+          // image: CachedNetworkImage(imageUrl: service.imagePath),
           fit: BoxFit.fill,
         ),
       ),

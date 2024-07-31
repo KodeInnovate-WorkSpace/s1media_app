@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
+import 'package:s1media_app/controller/service_controller.dart';
 import 'package:s1media_app/screens/admin.dart';
 import 'package:s1media_app/screens/contact.dart';
 import 'package:s1media_app/screens/login.dart';
@@ -21,11 +23,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  var logger = Logger();
+
   int _current = 0;
   late List<Widget> _items;
-  late List<MyService> _myServices;
   UserController userObj = UserController();
   AuthController authObj = AuthController();
+  ServiceController servObj = ServiceController();
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool _isTextVisible = false;
@@ -34,72 +38,26 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _myServices = [
-      MyService(
-        imagePath: "assets/deal_done_broker.jpeg",
-        title: "Deal Done Brokers",
-        subText: "Video tours of properties and highlighting unique features and amenities",
-        videoUrls: [
-          "https://www.youtube.com/watch?v=RwU7YY6emYc",
-          "https://www.youtube.com/watch?v=ScMzIvxBSi4",
-          "https://www.youtube.com/watch?v=FsseeXyjnF0",
-          "https://www.youtube.com/watch?v=u31qwQUeGuM",
-        ],
-      ),
-      MyService(
-        imagePath: "assets/the_restro.jpeg",
-        title: "The Restro",
-        subText: "Capturing the ambiance & culinary delights and showcasing special dishes & events",
-        videoUrls: [
-          "https://www.youtube.com/watch?v=ScMzIvxBSi4",
-          "https://www.youtube.com/watch?v=u31qwQUeGuM",
-          "https://www.youtube.com/watch?v=RwU7YY6emYc",
-          "https://www.youtube.com/watch?v=FsseeXyjnF0",
-        ],
-      ),
-      MyService(
-        imagePath: "assets/autoz_plus.png",
-        title: "Autoz Plus",
-        subText: "Updates on new and old cars and bikes, buy and sell opportunities, market trends",
-        videoUrls: [
-          "Link 5",
-          "Link 6",
-          "Link 7",
-          "Link 8",
-        ],
-      ),
-      MyService(
-        imagePath: "assets/the_foodizz.jpeg",
-        title: "The Foodizz",
-        subText: "Step-by-step cooking videos and featuring professional chefs and home cooks",
-        videoUrls: [
-          "Link 5",
-          "Link 6",
-          "Link 7",
-          "Link 8",
-        ],
-      ),
-      MyService(
-        imagePath: "assets/royalz_hotels.jpeg",
-        title: "Multi Businesses",
-        subText: "Virtual tours of hotel facilities and highlighting services and guest experience",
-        videoUrls: [
-          "Link 5",
-          "Link 6",
-          "Link 7",
-          "Link 8",
-        ],
-      ),
-    ];
-
-    _items = _myServices.map((service) => buildImageContainer(service, _myServices)).toList();
+    fetchAndSetServices();
     getUserType();
+
     // Trigger the animation after a short delay
     Timer(const Duration(milliseconds: 500), () {
       setState(() {
         _isTextVisible = true;
       });
     });
+  }
+
+  void fetchAndSetServices() async {
+    try {
+      List<MyService> servicesList = await servObj.serviceList();
+      setState(() {
+        _items = servicesList.map((service) => buildImageContainer(service, servicesList)).toList();
+      });
+    } catch (e) {
+      logger.e("Error fetching and setting services", error: e);
+    }
   }
 
   getUserType() async {
@@ -164,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Get.to(
                       () => const AdminScreen(),
                       transition: Transition.rightToLeft,
-                      duration: const Duration(milliseconds: 600),
+                      duration: const Duration(milliseconds: 400),
                     );
                   },
                   leading: Image.asset(
@@ -184,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Get.to(
                     () => const ContactScreen(),
                     transition: Transition.rightToLeft,
-                    duration: const Duration(milliseconds: 600),
+                    duration: const Duration(milliseconds: 400),
                   );
                 },
                 leading: Image.asset(
