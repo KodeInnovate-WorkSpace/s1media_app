@@ -1,12 +1,11 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:s1media_app/controller/admin_controller.dart';
-import 'package:s1media_app/widget/enquire_text_field.dart';
-import '../controller/user_controller.dart';
+import '../controller/admin_controller.dart';
+import '../widget/enquire_text_field.dart';
 
 class AddService extends StatefulWidget {
   const AddService({super.key});
@@ -17,27 +16,18 @@ class AddService extends StatefulWidget {
 
 class _AddServiceState extends State<AddService> {
   final _formkey = GlobalKey<FormState>();
-  AdminController adminObj = AdminController();
+  final AdminController adminObj = AdminController();
 
-  TextEditingController titleController = TextEditingController();
-  TextEditingController subTextController = TextEditingController();
-  TextEditingController imgUrlController = TextEditingController();
-  List<TextEditingController> vidUrlControllers = [TextEditingController()];
-  UserController userObj = UserController();
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController subTextController = TextEditingController();
+  final List<TextEditingController> vidUrlControllers = [TextEditingController()];
 
-  String? initialDropdownValue;
   File? _image;
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   void dispose() {
     titleController.dispose();
     subTextController.dispose();
-    imgUrlController.dispose();
     for (var controller in vidUrlControllers) {
       controller.dispose();
     }
@@ -57,24 +47,6 @@ class _AddServiceState extends State<AddService> {
         vidUrlControllers.removeAt(index);
       }
     });
-  }
-
-  Future<void> _pickImage(ImageSource source) async {
-    final pickedFile = await ImagePicker().pickImage(source: source);
-    if (pickedFile != null) {
-      setState(() {
-        _image = File(pickedFile.path);
-      });
-    }
-  }
-
-  Future<String> _uploadImage(File image) async {
-    final storageRef = FirebaseStorage.instance.ref().child('/serviceImages/${DateTime.now().millisecondsSinceEpoch}');
-    final uploadTask = storageRef.putFile(image);
-    final snapshot = await uploadTask;
-    final downloadUrl = await snapshot.ref.getDownloadURL();
-    Get.snackbar("Image Uploaded", "");
-    return downloadUrl;
   }
 
   @override
@@ -105,13 +77,11 @@ class _AddServiceState extends State<AddService> {
                 StatefulBuilder(builder: (context, setState) {
                   return Column(
                     children: [
-                      // Camera and Gallery
                       _image != null ? Image.file(_image!, height: 100, width: 100) : const Text("No image selected"),
                       const SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          //Open Camera
                           Container(
                             decoration: BoxDecoration(
                               color: const Color(0xfff7f8fa),
@@ -119,26 +89,33 @@ class _AddServiceState extends State<AddService> {
                               border: Border.all(color: const Color(0xffE8E9EB), width: 1),
                             ),
                             child: TextButton(
-                              onPressed: () => _pickImage(ImageSource.camera),
-                              style: ButtonStyle(overlayColor: WidgetStateProperty.all(Colors.transparent)),
+                              onPressed: () async {
+                                await adminObj.pickImage(ImageSource.camera);
+                                setState(() {
+                                  _image = adminObj.imageFile; // Update the image state
+                                });
+                              },
+                              style: ButtonStyle(overlayColor: MaterialStateProperty.all(Colors.transparent)),
                               child: const Text(
                                 "Open Camera",
                                 style: TextStyle(color: Colors.grey, fontFamily: "cgb", fontSize: 15),
                               ),
                             ),
                           ),
-
-                          //Open Gallery
                           Container(
                             decoration: BoxDecoration(
                               color: const Color(0xfff7f8fa),
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(color: const Color(0xffE8E9EB), width: 1),
                             ),
-                            // width: double.infinity,
                             child: TextButton(
-                              onPressed: () => _pickImage(ImageSource.gallery),
-                              style: ButtonStyle(overlayColor: WidgetStateProperty.all(Colors.transparent)),
+                              onPressed: () async {
+                                await adminObj.pickImage(ImageSource.gallery);
+                                setState(() {
+                                  _image = adminObj.imageFile; // Update the image state
+                                });
+                              },
+                              style: ButtonStyle(overlayColor: MaterialStateProperty.all(Colors.transparent)),
                               child: const Text(
                                 "Open Gallery",
                                 style: TextStyle(color: Colors.grey, fontFamily: "cgb", fontSize: 15),
@@ -147,10 +124,7 @@ class _AddServiceState extends State<AddService> {
                           ),
                         ],
                       ),
-
                       const SizedBox(height: 20),
-
-                      //Title
                       enquireTextField(titleController, "Title", setState, (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter title';
@@ -158,8 +132,6 @@ class _AddServiceState extends State<AddService> {
                         return null;
                       }),
                       const SizedBox(height: 20),
-
-                      //Sub-Text
                       enquireTextField(subTextController, "Sub-Text", setState, (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter sub-text';
@@ -167,8 +139,6 @@ class _AddServiceState extends State<AddService> {
                         return null;
                       }),
                       const SizedBox(height: 20),
-
-                      // Vid Url
                       Column(
                         children: vidUrlControllers.asMap().entries.map((entry) {
                           int index = entry.key;
@@ -194,7 +164,7 @@ class _AddServiceState extends State<AddService> {
                                     HapticFeedback.selectionClick();
                                     _removeVideoUrlField(index);
                                   },
-                                  style: ButtonStyle(overlayColor: WidgetStateProperty.all(Colors.transparent)),
+                                  style: ButtonStyle(overlayColor: MaterialStateProperty.all(Colors.transparent)),
                                 ),
                               ],
                             ),
@@ -220,28 +190,34 @@ class _AddServiceState extends State<AddService> {
                   decoration: BoxDecoration(color: const Color(0xffdc3545), borderRadius: BorderRadius.circular(10)),
                   width: double.infinity,
                   child: TextButton(
-                      onPressed: () async {
-                        if (_formkey.currentState!.validate()) {
-                          HapticFeedback.selectionClick();
-                          List<String> vidUrlsList = vidUrlControllers.map((controller) => controller.text).toList();
-                          String imgUrl = '';
-                          if (_image != null) {
-                            imgUrl = await _uploadImage(_image!);
-                          }
-                          await adminObj.storeService(
-                            imgUrl,
-                            titleController.text,
-                            subTextController.text,
-                            vidUrlsList,
-                          );
+                    onPressed: () async {
+                      if (_formkey.currentState!.validate()) {
+                        HapticFeedback.selectionClick();
+                        List<String> vidUrlsList = vidUrlControllers.map((controller) => controller.text).toList();
+                        String imgUrl = '';
+
+                        if (adminObj.imageFile != null) {
+                          imgUrl = await adminObj.uploadImage();
                         } else {
-                          Get.snackbar("Empty Field", "Please fill necessary details to continue", duration: const Duration(milliseconds: 600));
+                          Get.snackbar("Image Required", "Please upload an image", duration: const Duration(milliseconds: 600));
+                          return;
                         }
-                      },
-                      child: const Text(
-                        "Add Service",
-                        style: TextStyle(color: Colors.white, fontFamily: "cgblack", fontSize: 19),
-                      )),
+                        await adminObj.storeService(
+                          imgUrl,
+                          titleController.text,
+                          subTextController.text,
+                          vidUrlsList,
+                        );
+                      } else {
+                        Get.snackbar("Empty Field", "Please fill necessary details to continue", duration: const Duration(milliseconds: 600));
+                        return;
+                      }
+                    },
+                    child: const Text(
+                      "Add Service",
+                      style: TextStyle(color: Colors.white, fontFamily: "cgblack", fontSize: 19),
+                    ),
+                  ),
                 ),
               ],
             ),

@@ -10,7 +10,7 @@ class AdminController {
   var logger = Logger();
   ServiceController serObj = ServiceController();
   List<Map<String, dynamic>> serData = [];
-  File? _image;
+  File? imageFile;
 
   //Store new service and check if id already exist
   Future<void> storeService(String imageUrl, String title, String subText, List<String> vidUrl) async {
@@ -20,7 +20,8 @@ class AdminController {
       final querySnapshot = await FirebaseFirestore.instance.collection('service').where('title', isEqualTo: title).get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        logger.w("Sub-Category already exists");
+        logger.w("Service already exists");
+        Get.snackbar("Service already exists", "Service with the same title already exist in database");
         return;
       }
       // Calculate the new sub-category ID
@@ -55,13 +56,16 @@ class AdminController {
   }
 
   // Upload image and add sub-category to Firestore
-  Future<String> uploadImage(File image) async {
+  Future<String> uploadImage() async {
+    if (imageFile == null) {
+      throw Exception("No image selected");
+    }
+
     try {
       final storageRef = FirebaseStorage.instance.ref().child('/serviceImages/${DateTime.now().millisecondsSinceEpoch}');
-      final uploadTask = storageRef.putFile(image);
+      final uploadTask = storageRef.putFile(imageFile!);
       final snapshot = await uploadTask;
       final downloadUrl = await snapshot.ref.getDownloadURL();
-      Get.snackbar("Image Uploaded", "");
       return downloadUrl;
     } catch (e) {
       logger.e("Error uploading image", error: e);
@@ -69,17 +73,10 @@ class AdminController {
     }
   }
 
-  Future<void> pickImage() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+  Future<void> pickImage(ImageSource source) async {
+    final pickedFile = await ImagePicker().pickImage(source: source);
     if (pickedFile != null) {
-      _image = File(pickedFile.path);
-    }
-  }
-
-  Future<void> openCamera() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
-    if (pickedFile != null) {
-      _image = File(pickedFile.path);
+      imageFile = File(pickedFile.path);
     }
   }
 }
