@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:s1media_app/controller/admin_controller.dart';
 import 'package:s1media_app/widget/enquire_text_field.dart';
 import '../controller/user_controller.dart';
 
@@ -13,6 +14,7 @@ class AddService extends StatefulWidget {
 
 class _AddServiceState extends State<AddService> {
   final _formkey = GlobalKey<FormState>();
+  AdminController adminObj = AdminController();
 
   TextEditingController titleController = TextEditingController();
   TextEditingController subTextController = TextEditingController();
@@ -89,9 +91,6 @@ class _AddServiceState extends State<AddService> {
                         }
                         return null;
                       }),
-                      const SizedBox(height: 20),
-
-                      const SizedBox(height: 20),
                     ],
                   );
                 }),
@@ -103,13 +102,14 @@ class _AddServiceState extends State<AddService> {
                       onPressed: () async {
                         if (_formkey.currentState!.validate()) {
                           HapticFeedback.selectionClick();
+                          await adminObj.storeService(imgUrlController.text, titleController.text, subTextController.text, vidUrlController.text);
                         } else {
                           Get.snackbar("Empty Field", "Please fill necessary details to continue", duration: const Duration(milliseconds: 600));
                         }
                       },
                       child: const Text(
                         "Add Service",
-                        style: TextStyle(color: Colors.white, fontFamily: "Satoshi-Black", fontSize: 18),
+                        style: TextStyle(color: Colors.white, fontFamily: "cgblack", fontSize: 19),
                       )),
                 ),
               ],
