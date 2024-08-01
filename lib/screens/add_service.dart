@@ -19,7 +19,8 @@ class _AddServiceState extends State<AddService> {
   TextEditingController titleController = TextEditingController();
   TextEditingController subTextController = TextEditingController();
   TextEditingController imgUrlController = TextEditingController();
-  TextEditingController vidUrlController = TextEditingController();
+  // TextEditingController vidUrlController = TextEditingController();
+  List<TextEditingController> vidUrlControllers = [TextEditingController()];
   UserController userObj = UserController();
 
   String? initialDropdownValue;
@@ -27,6 +28,32 @@ class _AddServiceState extends State<AddService> {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    subTextController.dispose();
+    imgUrlController.dispose();
+    for (var controller in vidUrlControllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  void _addVideoUrlField() {
+    setState(() {
+      vidUrlControllers.add(TextEditingController());
+    });
+  }
+
+  void _removeVideoUrlField(int index) {
+    setState(() {
+      if (vidUrlControllers.length > 1) {
+        vidUrlControllers[index].dispose();
+        vidUrlControllers.removeAt(index);
+      }
+    });
   }
 
   @override
@@ -84,13 +111,36 @@ class _AddServiceState extends State<AddService> {
                       }),
                       const SizedBox(height: 20),
 
-                      //Video
-                      enquireTextField(vidUrlController, "Video URLs", setState, (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter video url';
-                        }
-                        return null;
-                      }),
+                      Column(
+                        children: vidUrlControllers.asMap().entries.map((entry) {
+                          int index = entry.key;
+                          TextEditingController controller = entry.value;
+                          return Row(
+                            children: [
+                              Expanded(
+                                child: enquireTextField(controller, "Video URL ${index + 1}", setState, (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter video url';
+                                  }
+                                  return null;
+                                }),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.remove_circle),
+                                onPressed: () => _removeVideoUrlField(index),
+                              ),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                      const SizedBox(height: 10),
+                      TextButton(
+                        onPressed: _addVideoUrlField,
+                        child: Text(
+                          "Add Another Video URL",
+                          style: TextStyle(color: Colors.blue.shade700, fontFamily: 'cgb', fontSize: 15),
+                        ),
+                      ),
                     ],
                   );
                 }),
@@ -102,7 +152,16 @@ class _AddServiceState extends State<AddService> {
                       onPressed: () async {
                         if (_formkey.currentState!.validate()) {
                           HapticFeedback.selectionClick();
-                          await adminObj.storeService(imgUrlController.text, titleController.text, subTextController.text, vidUrlController.text);
+                          // await adminObj.storeService(imgUrlController.text, titleController.text, subTextController.text, vidUrlController.text);
+                          List<String> vidUrlsList = vidUrlControllers.map((controller) => controller.text).toList();
+
+                          await adminObj.storeService(
+                            imgUrlController.text,
+                            titleController.text,
+                            subTextController.text,
+                            vidUrlsList,
+                          );
+                          Get.back();
                         } else {
                           Get.snackbar("Empty Field", "Please fill necessary details to continue", duration: const Duration(milliseconds: 600));
                         }
