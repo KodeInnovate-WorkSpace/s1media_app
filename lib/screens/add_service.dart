@@ -1,6 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:s1media_app/controller/admin_controller.dart';
 import 'package:s1media_app/widget/enquire_text_field.dart';
 import '../controller/user_controller.dart';
@@ -19,11 +22,11 @@ class _AddServiceState extends State<AddService> {
   TextEditingController titleController = TextEditingController();
   TextEditingController subTextController = TextEditingController();
   TextEditingController imgUrlController = TextEditingController();
-  // TextEditingController vidUrlController = TextEditingController();
   List<TextEditingController> vidUrlControllers = [TextEditingController()];
   UserController userObj = UserController();
 
   String? initialDropdownValue;
+  File? _image;
 
   @override
   void initState() {
@@ -56,6 +59,24 @@ class _AddServiceState extends State<AddService> {
     });
   }
 
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await ImagePicker().pickImage(source: source);
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
+  }
+
+  Future<String> _uploadImage(File image) async {
+    final storageRef = FirebaseStorage.instance.ref().child('/serviceImages/${DateTime.now().millisecondsSinceEpoch}');
+    final uploadTask = storageRef.putFile(image);
+    final snapshot = await uploadTask;
+    final downloadUrl = await snapshot.ref.getDownloadURL();
+    Get.snackbar("Image Uploaded", "");
+    return downloadUrl;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,6 +105,48 @@ class _AddServiceState extends State<AddService> {
                 StatefulBuilder(builder: (context, setState) {
                   return Column(
                     children: [
+                      // Camera and Gallery
+                      _image != null ? Image.file(_image!, height: 100, width: 100) : const Text("No image selected"),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: const Color(0xfff7f8fa),
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: const Color(0xffE8E9EB), width: 1),
+                            ),
+                            child: TextButton(
+                              onPressed: () => _pickImage(ImageSource.camera),
+                              style: ButtonStyle(overlayColor: WidgetStateProperty.all(Colors.transparent)),
+                              child: const Text(
+                                "Open Camera",
+                                style: TextStyle(color: Colors.grey, fontFamily: "cgb", fontSize: 15),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: const Color(0xfff7f8fa),
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: const Color(0xffE8E9EB), width: 1),
+                            ),
+                            // width: double.infinity,
+                            child: TextButton(
+                              onPressed: () => _pickImage(ImageSource.gallery),
+                              style: ButtonStyle(overlayColor: WidgetStateProperty.all(Colors.transparent)),
+                              child: const Text(
+                                "Open Gallery",
+                                style: TextStyle(color: Colors.grey, fontFamily: "cgb", fontSize: 15),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 20),
+
                       //Title
                       enquireTextField(titleController, "Title", setState, (value) {
                         if (value == null || value.isEmpty) {
@@ -102,43 +165,41 @@ class _AddServiceState extends State<AddService> {
                       }),
                       const SizedBox(height: 20),
 
-                      //Image
-                      enquireTextField(imgUrlController, "Image URL", setState, (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter image url';
-                        }
-                        return null;
-                      }),
-                      const SizedBox(height: 20),
-
+                      // Vid Url
                       Column(
                         children: vidUrlControllers.asMap().entries.map((entry) {
                           int index = entry.key;
                           TextEditingController controller = entry.value;
-                          return Row(
-                            children: [
-                              Expanded(
-                                child: enquireTextField(controller, "Video URL ${index + 1}", setState, (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter video url';
-                                  }
-                                  return null;
-                                }),
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.remove_circle),
-                                onPressed: () => _removeVideoUrlField(index),
-                              ),
-                            ],
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 6),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: enquireTextField(controller, "Video URL ${index + 1}", setState, (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter video url';
+                                    }
+                                    return null;
+                                  }),
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.remove_circle),
+                                  onPressed: () => _removeVideoUrlField(index),
+                                ),
+                              ],
+                            ),
                           );
                         }).toList(),
                       ),
                       const SizedBox(height: 10),
-                      TextButton(
-                        onPressed: _addVideoUrlField,
-                        child: Text(
+                      GestureDetector(
+                        onTap: () {
+                          HapticFeedback.selectionClick();
+                          _addVideoUrlField();
+                        },
+                        child: const Text(
                           "Add Another Video URL",
-                          style: TextStyle(color: Colors.blue.shade700, fontFamily: 'cgb', fontSize: 15),
+                          style: TextStyle(color: Color(0xffdc3545), fontFamily: 'cgb', fontSize: 15),
                         ),
                       ),
                     ],
@@ -152,16 +213,17 @@ class _AddServiceState extends State<AddService> {
                       onPressed: () async {
                         if (_formkey.currentState!.validate()) {
                           HapticFeedback.selectionClick();
-                          // await adminObj.storeService(imgUrlController.text, titleController.text, subTextController.text, vidUrlController.text);
                           List<String> vidUrlsList = vidUrlControllers.map((controller) => controller.text).toList();
-
+                          String imgUrl = '';
+                          if (_image != null) {
+                            imgUrl = await _uploadImage(_image!);
+                          }
                           await adminObj.storeService(
-                            imgUrlController.text,
+                            imgUrl,
                             titleController.text,
                             subTextController.text,
                             vidUrlsList,
                           );
-                          Get.back();
                         } else {
                           Get.snackbar("Empty Field", "Please fill necessary details to continue", duration: const Duration(milliseconds: 600));
                         }

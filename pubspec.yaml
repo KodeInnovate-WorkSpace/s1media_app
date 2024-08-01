@@ -11,12 +11,14 @@ dependencies:
   carousel_slider: ^4.2.1
   cloud_firestore: ^5.1.0
   firebase_core: ^3.2.0
+  firebase_storage: ^12.1.2
   flutter:
     sdk: flutter
   flutter_dotenv: ^5.1.0
   flutter_native_splash: ^2.4.1
   flutter_snake_navigationbar: ^0.6.1
   get: ^4.6.6
+  image_picker: ^1.1.2
   in_app_update: ^4.2.3
   intl: ^0.19.0
   logger: ^2.4.0
