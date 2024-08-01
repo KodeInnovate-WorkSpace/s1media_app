@@ -111,6 +111,7 @@ class _AddServiceState extends State<AddService> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
+                          //Open Camera
                           Container(
                             decoration: BoxDecoration(
                               color: const Color(0xfff7f8fa),
@@ -126,6 +127,8 @@ class _AddServiceState extends State<AddService> {
                               ),
                             ),
                           ),
+
+                          //Open Gallery
                           Container(
                             decoration: BoxDecoration(
                               color: const Color(0xfff7f8fa),
@@ -183,8 +186,15 @@ class _AddServiceState extends State<AddService> {
                                   }),
                                 ),
                                 IconButton(
-                                  icon: const Icon(Icons.remove_circle),
-                                  onPressed: () => _removeVideoUrlField(index),
+                                  icon: const Icon(
+                                    Icons.remove_circle,
+                                    color: Color(0xffdc3545),
+                                  ),
+                                  onPressed: () {
+                                    HapticFeedback.selectionClick();
+                                    _removeVideoUrlField(index);
+                                  },
+                                  style: ButtonStyle(overlayColor: WidgetStateProperty.all(Colors.transparent)),
                                 ),
                               ],
                             ),
