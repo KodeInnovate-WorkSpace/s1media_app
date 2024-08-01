@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:s1media_app/screens/add_service.dart';
-import 'package:s1media_app/screens/add_video.dart';
 
 class AdminScreen extends StatelessWidget {
   const AdminScreen({super.key});
@@ -10,7 +9,7 @@ class AdminScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     List<String> pages = [
       "Add Service",
-      "Add Video",
+      // "Add Video",
     ];
     return Scaffold(
       appBar: AppBar(
@@ -44,7 +43,7 @@ class AdminScreen extends StatelessWidget {
   Widget customContainer(BuildContext context, String pageName, String routeName) {
     final Map<String, WidgetBuilder> pageRoutes = {
       'p1': (context) => const AddService(),
-      'p2': (context) => const AddVideo(),
+      // 'p2': (context) => const AddVideo(),
     };
 
     return InkWell(
