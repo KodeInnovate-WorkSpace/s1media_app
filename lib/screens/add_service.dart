@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -23,6 +22,8 @@ class _AddServiceState extends State<AddService> {
   final List<TextEditingController> vidUrlControllers = [TextEditingController()];
 
   File? _image;
+
+  bool isServiceAdded = false;
 
   @override
   void dispose() {
@@ -95,7 +96,7 @@ class _AddServiceState extends State<AddService> {
                                   _image = adminObj.imageFile; // Update the image state
                                 });
                               },
-                              style: ButtonStyle(overlayColor: MaterialStateProperty.all(Colors.transparent)),
+                              style: ButtonStyle(overlayColor: WidgetStateProperty.all(Colors.transparent)),
                               child: const Text(
                                 "Open Camera",
                                 style: TextStyle(color: Colors.grey, fontFamily: "cgb", fontSize: 15),
@@ -115,7 +116,7 @@ class _AddServiceState extends State<AddService> {
                                   _image = adminObj.imageFile; // Update the image state
                                 });
                               },
-                              style: ButtonStyle(overlayColor: MaterialStateProperty.all(Colors.transparent)),
+                              style: ButtonStyle(overlayColor: WidgetStateProperty.all(Colors.transparent)),
                               child: const Text(
                                 "Open Gallery",
                                 style: TextStyle(color: Colors.grey, fontFamily: "cgb", fontSize: 15),
@@ -164,7 +165,7 @@ class _AddServiceState extends State<AddService> {
                                     HapticFeedback.selectionClick();
                                     _removeVideoUrlField(index);
                                   },
-                                  style: ButtonStyle(overlayColor: MaterialStateProperty.all(Colors.transparent)),
+                                  style: ButtonStyle(overlayColor: WidgetStateProperty.all(Colors.transparent)),
                                 ),
                               ],
                             ),
@@ -191,8 +192,12 @@ class _AddServiceState extends State<AddService> {
                   width: double.infinity,
                   child: TextButton(
                     onPressed: () async {
+                      HapticFeedback.selectionClick();
                       if (_formkey.currentState!.validate()) {
-                        HapticFeedback.selectionClick();
+                        setState(() {
+                          isServiceAdded = true;
+                        });
+
                         List<String> vidUrlsList = vidUrlControllers.map((controller) => controller.text).toList();
                         String imgUrl = '';
 
@@ -208,15 +213,30 @@ class _AddServiceState extends State<AddService> {
                           subTextController.text,
                           vidUrlsList,
                         );
+                        setState(() {
+                          isServiceAdded = false;
+                        });
+                        Get.back();
                       } else {
                         Get.snackbar("Empty Field", "Please fill necessary details to continue", duration: const Duration(milliseconds: 600));
                         return;
                       }
                     },
-                    child: const Text(
-                      "Add Service",
-                      style: TextStyle(color: Colors.white, fontFamily: "cgblack", fontSize: 19),
-                    ),
+                    child: isServiceAdded
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20.0,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2.3,
+                              ),
+                            ),
+                          )
+                        : const Text(
+                            "Add Service",
+                            style: TextStyle(color: Colors.white, fontFamily: "cgblack", fontSize: 19),
+                          ),
                   ),
                 ),
               ],

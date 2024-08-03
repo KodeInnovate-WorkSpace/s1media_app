@@ -16,15 +16,15 @@ class AdminController {
   Future<void> storeService(String imageUrl, String title, String subText, List<String> vidUrl) async {
     try {
       serData = await serObj.fetchServiceData();
-      // Check if sub-category already exists
+      // Check if service already exists
       final querySnapshot = await FirebaseFirestore.instance.collection('service').where('title', isEqualTo: title).get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        logger.w("Service already exists");
         Get.snackbar("Service already exists", "Service with the same title already exist in database");
+        logger.w("Service already exists");
         return;
       }
-      // Calculate the new sub-category ID
+      // Calculate the new service ID
       int newId = serData.length + 1;
 
       // Check if the ID is already used
@@ -46,16 +46,15 @@ class AdminController {
         'subText': subText,
         'vidUrl': vidUrl,
       });
-      logger.i("Service stored successfully");
       Get.snackbar("Service Added", "New service added successfully");
-      Get.back();
+      logger.i("Service stored successfully");
     } catch (e) {
-      logger.e("Error storing service", error: e);
       Get.snackbar("Service not added", "Something went wrong");
+      logger.e("Error storing service", error: e);
     }
   }
 
-  // Upload image and add sub-category to Firestore
+  // Upload image and add service to Firestore
   Future<String> uploadImage() async {
     if (imageFile == null) {
       throw Exception("No image selected");
@@ -68,6 +67,7 @@ class AdminController {
       final downloadUrl = await snapshot.ref.getDownloadURL();
       return downloadUrl;
     } catch (e) {
+      Get.snackbar("Error uploading image", "Something went wrong");
       logger.e("Error uploading image", error: e);
       rethrow;
     }

@@ -80,7 +80,7 @@ class AuthController {
       final sendReport = await send(message, smtpServer);
       debugPrint('Message sent: $sendReport');
       Get.to(
-          () => OTPScreen(
+          () => OtpScreen(
                 email: receiverEmail,
                 otp: code,
               ),

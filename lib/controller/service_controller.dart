@@ -3,7 +3,7 @@ import 'package:logger/logger.dart';
 import '../model/myservice.dart';
 
 class ServiceController {
-  late List<MyService> _myServices;
+  late List<MyService> myServices;
   var logger = Logger();
 
   Future<List<Map<String, dynamic>>> fetchServiceData() async {

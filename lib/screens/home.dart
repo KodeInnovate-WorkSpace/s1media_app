@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:logger/logger.dart';
 import 'package:s1media_app/controller/service_controller.dart';
 import 'package:s1media_app/screens/admin.dart';
@@ -48,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void fetchAndSetServices() async {
+  Future<void> fetchAndSetServices() async {
     try {
       List<MyService> servicesList = await servObj.serviceList();
       setState(() {
@@ -59,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  getUserType() async {
+  Future<void> getUserType() async {
     await authObj.retrieveUser();
     int fetchedUserType = (await authObj.userType(authObj.email))!;
     setState(() {
@@ -250,35 +251,44 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: SingleChildScrollView(
-          child: AnimatedOpacity(
-            opacity: _isTextVisible ? 1.0 : 0.0,
-            duration: const Duration(seconds: 1),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Our Service
-                const Text(
-                  "Our Services",
-                  style: TextStyle(
-                    fontFamily: "cgblack",
-                    fontSize: 35,
+      body: LiquidPullToRefresh(
+        onRefresh: () async {
+          await fetchAndSetServices();
+          await getUserType();
+        },
+        backgroundColor: Colors.white,
+        color: const Color(0xffBA1D17),
+        animSpeedFactor: 6,
+        showChildOpacityTransition: false,
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: SingleChildScrollView(
+            child: AnimatedOpacity(
+              opacity: _isTextVisible ? 1.0 : 0.0,
+              duration: const Duration(seconds: 1),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Our Service
+                  const Text(
+                    "Our Services",
+                    style: TextStyle(
+                      fontFamily: "cgblack",
+                      fontSize: 35,
+                    ),
                   ),
-                ),
-                const Text(
-                  "At S1Media, we offer a range of services designed to showcase your business",
-                  style: TextStyle(fontFamily: "cgm", fontSize: 15, color: Color(0xff8A8B8B)),
-                ),
+                  const Text(
+                    "At S1Media, we offer a range of services designed to showcase your business",
+                    style: TextStyle(fontFamily: "cgm", fontSize: 15, color: Color(0xff8A8B8B)),
+                  ),
 
-                const SizedBox(
-                  height: 25,
-                ),
+                  const SizedBox(
+                    height: 25,
+                  ),
 
-                //Slider
-                CarouselSlider(
+                  //Slider
+                  CarouselSlider(
                     items: _items,
                     options: CarouselOptions(
                       height: 380.0,
@@ -292,50 +302,52 @@ class _HomeScreenState extends State<HomeScreen> {
                           _current = index;
                         });
                       },
-                    )),
-                // Dots
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: _items.map((item) {
-                    int index = _items.indexOf(item);
-                    return Container(
-                      width: 8.0,
-                      height: 8.0,
-                      margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-                      decoration: BoxDecoration(shape: BoxShape.circle, color: _current == index ? const Color(0xffBA1D17) : const Color(0xffD9D9D9)),
-                    );
-                  }).toList(),
-                ),
-
-                const SizedBox(
-                  height: 25,
-                ),
-
-                const Text(
-                  "Why Choose Us?",
-                  style: TextStyle(
-                    fontFamily: "cgblack",
-                    fontSize: 32,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
+                  // Dots
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: _items.map((item) {
+                      int index = _items.indexOf(item);
+                      return Container(
+                        width: 8.0,
+                        height: 8.0,
+                        margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                        decoration: BoxDecoration(shape: BoxShape.circle, color: _current == index ? const Color(0xffBA1D17) : const Color(0xffD9D9D9)),
+                      );
+                    }).toList(),
+                  ),
 
-                buildChooseUsContainer("Free Shooting", "We do not charge for shooting your property or business"),
-                const SizedBox(
-                  height: 20,
-                ),
-                buildChooseUsContainer("Free Marketing For 2 Years", "Enjoy two years of free marketing on our YouTube channel and social media"),
-                const SizedBox(
-                  height: 20,
-                ),
-                buildChooseUsContainer("Affordable Rates", "After two years, continue your marketing in affordable rates"),
+                  const SizedBox(
+                    height: 25,
+                  ),
 
-                const SizedBox(
-                  height: 25,
-                ),
-              ],
+                  const Text(
+                    "Why Choose Us?",
+                    style: TextStyle(
+                      fontFamily: "cgblack",
+                      fontSize: 32,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+
+                  buildChooseUsContainer("Free Shooting", "We do not charge for shooting your property or business"),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  buildChooseUsContainer("Free Marketing For 2 Years", "Enjoy two years of free marketing on our YouTube channel and social media"),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  buildChooseUsContainer("Affordable Rates", "After two years, continue your marketing in affordable rates"),
+
+                  const SizedBox(
+                    height: 25,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

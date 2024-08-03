@@ -6,17 +6,17 @@ import 'package:pinput/pinput.dart';
 import 'package:s1media_app/screens/home.dart';
 import '../controller/auth_controller.dart';
 
-class OTPScreen extends StatefulWidget {
+class OtpScreen extends StatefulWidget {
   final String email;
   final String otp;
 
-  const OTPScreen({super.key, required this.email, required this.otp});
+  const OtpScreen({super.key, required this.email, required this.otp});
 
   @override
-  State<OTPScreen> createState() => _OTPScreenState();
+  State<OtpScreen> createState() => _OtpScreenState();
 }
 
-class _OTPScreenState extends State<OTPScreen> {
+class _OtpScreenState extends State<OtpScreen> {
   final TextEditingController _otpController = TextEditingController();
 
   bool otpLoading = false;
