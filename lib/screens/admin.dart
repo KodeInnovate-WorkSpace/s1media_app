@@ -1,16 +1,16 @@
-import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:s1media_app/screens/add_service.dart';
-import 'package:s1media_app/screens/home.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:logger/logger.dart';
+
+import 'add_service.dart';
 
 class AdminScreen extends StatelessWidget {
   const AdminScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Logger logger = Logger();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -42,6 +42,7 @@ class AdminScreen extends StatelessWidget {
                 customContainer(context, "Service", 165, 100, "service"),
               ],
             ),
+            const SizedBox(height: 20),
             // Add service new
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -51,7 +52,14 @@ class AdminScreen extends StatelessWidget {
                   style: TextStyle(fontFamily: "cgb", fontSize: 20),
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(
+                      () => const AddService(),
+                      transition: Transition.rightToLeft,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeInOut,
+                    );
+                  },
                   style: ButtonStyle(
                     overlayColor: WidgetStateProperty.all(Colors.transparent),
                   ),
@@ -62,10 +70,130 @@ class AdminScreen extends StatelessWidget {
                 ),
               ],
             ),
+            const SizedBox(height: 20),
+            // Scrollable container with list of services
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance.collection('service').snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  final services = snapshot.data!.docs;
+                  return ListView.builder(
+                    itemCount: services.length,
+                    itemBuilder: (context, index) {
+                      final service = services[index];
+                      return Dismissible(
+                        key: Key(service.id),
+                        // onDismissed: (direction) async {
+                        //   try {
+                        //     final querySnapshot = await FirebaseFirestore.instance.collection('service').where('id', isEqualTo: service[index].id).get();
+                        //
+                        //     for (var doc in querySnapshot.docs) {
+                        //       await doc.reference.delete();
+                        //     }
+                        //     logger.i("Service Deleted: ${service['title']}");
+                        //   } catch (e) {
+                        //     logger.e("Error deleting service", error: e);
+                        //   }
+                        // },
+                        background: Container(color: const Color(0xffdc3545)),
+                        confirmDismiss: (direction) {
+                          return showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              backgroundColor: Colors.white,
+                              title: const Text(
+                                "Delete",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              content: const Text(
+                                "Are you sure you want to delete this?",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              actions: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    TextButton(
+                                      onPressed: () => Navigator.of(context).pop(false),
+                                      style: ButtonStyle(
+                                        overlayColor: WidgetStateProperty.all(Colors.red[900]),
+                                      ),
+                                      child: const Text(
+                                        "No",
+                                        style: TextStyle(
+                                          color: Color(0xffEF4B4B),
+                                        ),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () async {
+                                        await deleteService(service['id']);
+                                        Get.back();
+                                      },
+                                      style: ButtonStyle(
+                                        overlayColor: WidgetStateProperty.all(Colors.grey[700]),
+                                      ),
+                                      child: const Text(
+                                        "Yes",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          );
+                        },
+                        child: ListTile(
+                          title: Text(service['title']),
+                          subtitle: Text(service['subText']),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.edit, color: Color(0xffdc3545)),
+                            onPressed: () {
+                              // Get.to(
+                              //       () => EditService(serviceId: service.id, serviceName: service['title']),
+                              //   transition: Transition.rightToLeft,
+                              //   duration: const Duration(milliseconds: 500),
+                              //   curve: Curves.easeInOut,
+                              // );
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> deleteService(dynamic id) async {
+    Logger logger = Logger();
+
+    try {
+      Query query = FirebaseFirestore.instance.collection('service');
+
+      // Add conditions to your query if any
+      if (id != null) {
+        query = query.where(FieldPath(const ['id']), isEqualTo: id);
+      }
+
+      // Get the documents matching the query
+      QuerySnapshot querySnapshot = await query.get();
+      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+        await doc.reference.delete();
+      }
+      logger.i("Service Deleted!");
+    } catch (e) {
+      logger.e("Error deleting category", error: e);
+    }
   }
 
   Widget customContainer(BuildContext context, String pageName, double wid, double hei, String collectionName) {
@@ -87,9 +215,7 @@ class AdminScreen extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const SizedBox(
-                width: 5,
-              ),
+              const SizedBox(width: 5),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -110,7 +236,7 @@ class AdminScreen extends StatelessWidget {
                   color: Color(0xffdc3545),
                 ),
                 child: Icon(
-                  pageName == "Users" ? Icons.person : Icons.category,
+                  pageName == "Users" ? Icons.group : Icons.category,
                   color: Colors.white,
                   size: 30,
                 ),
