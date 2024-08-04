@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
+import 'package:s1media_app/screens/update_service.dart';
 
 import 'add_service.dart';
 
@@ -44,31 +45,34 @@ class AdminScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             // Add service new
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  "All Services",
-                  style: TextStyle(fontFamily: "cgb", fontSize: 20),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Get.to(
-                      () => const AddService(),
-                      transition: Transition.rightToLeft,
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.easeInOut,
-                    );
-                  },
-                  style: ButtonStyle(
-                    overlayColor: WidgetStateProperty.all(Colors.transparent),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "All Services",
+                    style: TextStyle(fontFamily: "cgb", fontSize: 20),
                   ),
-                  child: const Text(
-                    "Add",
-                    style: TextStyle(color: Color(0xffdc3545), fontFamily: 'cgblack'),
+                  TextButton(
+                    onPressed: () {
+                      Get.to(
+                        () => const AddService(),
+                        transition: Transition.rightToLeft,
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeInOut,
+                      );
+                    },
+                    style: ButtonStyle(
+                      overlayColor: WidgetStateProperty.all(Colors.transparent),
+                    ),
+                    child: const Text(
+                      "Add",
+                      style: TextStyle(color: Color(0xffdc3545), fontFamily: 'cgblack'),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             const SizedBox(height: 20),
             // Scrollable container with list of services
@@ -86,18 +90,6 @@ class AdminScreen extends StatelessWidget {
                       final service = services[index];
                       return Dismissible(
                         key: Key(service.id),
-                        // onDismissed: (direction) async {
-                        //   try {
-                        //     final querySnapshot = await FirebaseFirestore.instance.collection('service').where('id', isEqualTo: service[index].id).get();
-                        //
-                        //     for (var doc in querySnapshot.docs) {
-                        //       await doc.reference.delete();
-                        //     }
-                        //     logger.i("Service Deleted: ${service['title']}");
-                        //   } catch (e) {
-                        //     logger.e("Error deleting service", error: e);
-                        //   }
-                        // },
                         background: Container(color: const Color(0xffdc3545)),
                         confirmDismiss: (direction) {
                           return showDialog(
@@ -148,17 +140,33 @@ class AdminScreen extends StatelessWidget {
                           );
                         },
                         child: ListTile(
-                          title: Text(service['title']),
-                          subtitle: Text(service['subText']),
+                          title: Text(
+                            service['title'],
+                            style: const TextStyle(
+                              fontFamily: 'cgblack',
+                            ),
+                          ),
+                          subtitle: Text(
+                            service['subText'],
+                            style: const TextStyle(
+                              fontFamily: 'cgm',
+                            ),
+                          ),
                           trailing: IconButton(
                             icon: const Icon(Icons.edit, color: Color(0xffdc3545)),
                             onPressed: () {
-                              // Get.to(
-                              //       () => EditService(serviceId: service.id, serviceName: service['title']),
-                              //   transition: Transition.rightToLeft,
-                              //   duration: const Duration(milliseconds: 500),
-                              //   curve: Curves.easeInOut,
-                              // );
+                              Get.to(
+                                () => UpdateService(
+                                  serviceId: service.id,
+                                  title: service['title'],
+                                  subText: service['subText'],
+                                  vidUrls: List<String>.from(service['vidUrls']),
+                                  imgUrl: service['imgUrl'],
+                                ),
+                                transition: Transition.rightToLeft,
+                                duration: const Duration(milliseconds: 500),
+                                curve: Curves.easeInOut,
+                              );
                             },
                           ),
                         ),

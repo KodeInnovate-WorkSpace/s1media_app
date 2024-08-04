@@ -79,4 +79,7 @@ class AdminController {
       imageFile = File(pickedFile.path);
     }
   }
+
+  //update service
+  Future<void> updateService(String id, String imageUrl, String title, String subText, List<String> vidUrl) async {}
 }

@@ -1,0 +1,275 @@
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import '../controller/admin_controller.dart';
+import '../widget/enquire_text_field.dart';
+
+class UpdateService extends StatefulWidget {
+  final String serviceId;
+  final String title;
+  final String subText;
+  final List<String> vidUrls;
+  final String imgUrl;
+
+  const UpdateService({
+    super.key,
+    required this.serviceId,
+    required this.title,
+    required this.subText,
+    required this.vidUrls,
+    required this.imgUrl,
+  });
+
+  @override
+  State<UpdateService> createState() => _UpdateServiceState();
+}
+
+class _UpdateServiceState extends State<UpdateService> {
+  final _formkey = GlobalKey<FormState>();
+  final AdminController adminObj = AdminController();
+
+  late TextEditingController titleController;
+  late TextEditingController subTextController;
+  late List<TextEditingController> vidUrlControllers = [];
+
+  File? _image;
+
+  bool isServiceAdded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    titleController = TextEditingController(text: widget.title);
+    subTextController = TextEditingController(text: widget.subText);
+    vidUrlControllers = widget.vidUrls.map((url) => TextEditingController(text: url)).toList();
+    // Load the image from the URL if needed
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    subTextController.dispose();
+    for (var controller in vidUrlControllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  void _addVideoUrlField() {
+    setState(() {
+      vidUrlControllers.add(TextEditingController());
+    });
+  }
+
+  void _removeVideoUrlField(int index) {
+    setState(() {
+      if (vidUrlControllers.length > 1) {
+        vidUrlControllers[index].dispose();
+        vidUrlControllers.removeAt(index);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
+        toolbarHeight: 40,
+        title: const Text(
+          "Update Service",
+          style: TextStyle(
+            fontFamily: "cgblack",
+            fontSize: 20,
+          ),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Form(
+            key: _formkey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const SizedBox(height: 20),
+                StatefulBuilder(builder: (context, setState) {
+                  return Column(
+                    children: [
+                      _image != null
+                          ? Image.file(_image!, height: 100, width: 100)
+                          : widget.imgUrl.isNotEmpty
+                              ? Image.network(widget.imgUrl, height: 100, width: 100)
+                              : const Text("No image selected"),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: const Color(0xfff7f8fa),
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: const Color(0xffE8E9EB), width: 1),
+                            ),
+                            child: TextButton(
+                              onPressed: () async {
+                                await adminObj.pickImage(ImageSource.camera);
+                                setState(() {
+                                  _image = adminObj.imageFile; // Update the image state
+                                });
+                              },
+                              style: ButtonStyle(overlayColor: WidgetStateProperty.all(Colors.transparent)),
+                              child: const Text(
+                                "Open Camera",
+                                style: TextStyle(color: Colors.grey, fontFamily: "cgb", fontSize: 15),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: const Color(0xfff7f8fa),
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: const Color(0xffE8E9EB), width: 1),
+                            ),
+                            child: TextButton(
+                              onPressed: () async {
+                                await adminObj.pickImage(ImageSource.gallery);
+                                setState(() {
+                                  _image = adminObj.imageFile; // Update the image state
+                                });
+                              },
+                              style: ButtonStyle(overlayColor: WidgetStateProperty.all(Colors.transparent)),
+                              child: const Text(
+                                "Open Gallery",
+                                style: TextStyle(color: Colors.grey, fontFamily: "cgb", fontSize: 15),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      enquireTextField(titleController, "Title", setState, (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter title';
+                        }
+                        return null;
+                      }),
+                      const SizedBox(height: 20),
+                      enquireTextField(subTextController, "Sub-Text", setState, (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter sub-text';
+                        }
+                        return null;
+                      }),
+                      const SizedBox(height: 20),
+                      Column(
+                        children: vidUrlControllers.asMap().entries.map((entry) {
+                          int index = entry.key;
+                          TextEditingController controller = entry.value;
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 6),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: enquireTextField(controller, "Video URL ${index + 1}", setState, (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter video url';
+                                    }
+                                    return null;
+                                  }),
+                                ),
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.remove_circle,
+                                    color: Color(0xffdc3545),
+                                  ),
+                                  onPressed: () {
+                                    HapticFeedback.selectionClick();
+                                    _removeVideoUrlField(index);
+                                  },
+                                  style: ButtonStyle(overlayColor: WidgetStateProperty.all(Colors.transparent)),
+                                ),
+                              ],
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                      const SizedBox(height: 10),
+                      GestureDetector(
+                        onTap: () {
+                          HapticFeedback.selectionClick();
+                          _addVideoUrlField();
+                        },
+                        child: const Text(
+                          "Add Another Video URL",
+                          style: TextStyle(color: Color(0xffdc3545), fontFamily: 'cgb', fontSize: 15),
+                        ),
+                      ),
+                    ],
+                  );
+                }),
+                const SizedBox(height: 20),
+                Container(
+                  decoration: BoxDecoration(color: const Color(0xffdc3545), borderRadius: BorderRadius.circular(10)),
+                  width: double.infinity,
+                  child: TextButton(
+                    onPressed: () async {
+                      HapticFeedback.selectionClick();
+                      if (_formkey.currentState!.validate()) {
+                        setState(() {
+                          isServiceAdded = true;
+                        });
+
+                        List<String> vidUrlsList = vidUrlControllers.map((controller) => controller.text).toList();
+                        String imgUrl = widget.imgUrl;
+
+                        if (adminObj.imageFile != null) {
+                          imgUrl = await adminObj.uploadImage();
+                        }
+
+                        await adminObj.updateService(
+                          widget.serviceId,
+                          imgUrl,
+                          titleController.text,
+                          subTextController.text,
+                          vidUrlsList,
+                        );
+
+                        setState(() {
+                          isServiceAdded = false;
+                        });
+                        Get.back();
+                      } else {
+                        Get.snackbar("Empty Field", "Please fill necessary details to continue", duration: const Duration(milliseconds: 600));
+                        return;
+                      }
+                    },
+                    child: isServiceAdded
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20.0,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2.3,
+                              ),
+                            ),
+                          )
+                        : const Text(
+                            "Update Service",
+                            style: TextStyle(color: Colors.white, fontFamily: "cgblack", fontSize: 19),
+                          ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
