@@ -204,6 +204,9 @@ class _AddServiceState extends State<AddService> {
                         if (adminObj.imageFile != null) {
                           imgUrl = await adminObj.uploadImage();
                         } else {
+                          setState(() {
+                            isServiceAdded = false;
+                          });
                           Get.snackbar("Image Required", "Please upload an image", duration: const Duration(milliseconds: 600));
                           return;
                         }
@@ -212,6 +215,7 @@ class _AddServiceState extends State<AddService> {
                           titleController.text,
                           subTextController.text,
                           vidUrlsList,
+                          context,
                         );
                         setState(() {
                           isServiceAdded = false;

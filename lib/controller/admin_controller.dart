@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
@@ -13,15 +14,15 @@ class AdminController {
   File? imageFile;
 
   //Store new service and check if id already exist
-  Future<void> storeService(String imageUrl, String title, String subText, List<String> vidUrl) async {
+  Future<void> storeService(String imageUrl, String title, String subText, List<String> vidUrl, BuildContext context) async {
     try {
       serData = await serObj.fetchServiceData();
       // Check if service already exists
       final querySnapshot = await FirebaseFirestore.instance.collection('service').where('title', isEqualTo: title).get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        Get.snackbar("Service already exists", "Service with the same title already exist in database");
         logger.w("Service already exists");
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Service already exists")));
         return;
       }
       // Calculate the new service ID
@@ -46,10 +47,14 @@ class AdminController {
         'subText': subText,
         'vidUrl': vidUrl,
       });
-      Get.snackbar("Service Added", "New service added successfully");
+      // Get.snackbar("Service Added", "New service added successfully");
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Service Added")));
+
       logger.i("Service stored successfully");
     } catch (e) {
-      Get.snackbar("Service not added", "Something went wrong");
+      // Get.snackbar("Service not added", "Something went wrong");
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Service not added, something went wrong")));
+
       logger.e("Error storing service", error: e);
     }
   }
