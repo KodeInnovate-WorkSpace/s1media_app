@@ -52,6 +52,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> fetchAndSetServices() async {
     try {
       List<MyService> servicesList = await servObj.serviceList();
+
+      servicesList.sort((a, b) => a.id.compareTo(b.id));
+
       setState(() {
         _items = servicesList.map((service) => buildImageContainer(service, servicesList)).toList();
       });

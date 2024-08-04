@@ -42,6 +42,7 @@ class ServiceController {
           title: data['title'] ?? 'No Title',
           subText: data['subText'] ?? 'No sub-text',
           videoUrls: videoUrls,
+          id: data['id'] ?? '',
         );
       }).toList();
     } catch (e) {

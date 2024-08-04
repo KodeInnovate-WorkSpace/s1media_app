@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
 import 'package:s1media_app/screens/update_service.dart';
-
 import 'add_service.dart';
 
 class AdminScreen extends StatelessWidget {
@@ -11,7 +10,6 @@ class AdminScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Logger logger = Logger();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
