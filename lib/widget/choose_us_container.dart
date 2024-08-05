@@ -4,7 +4,7 @@ Widget buildChooseUsContainer(String title, String subString) {
   return Container(
     width: double.infinity,
     decoration: BoxDecoration(
-      border: Border.all(color: Colors.black, width: 1.6),
+      border: Border.all(color: const Color(0xffBA1D17), width: 2),
       borderRadius: const BorderRadius.all(Radius.circular(10)),
     ),
     child: Padding(

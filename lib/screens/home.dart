@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:ui';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:get/get.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:logger/logger.dart';
 import 'package:s1media_app/controller/service_controller.dart';
+import 'package:s1media_app/screens/about.dart';
 import 'package:s1media_app/screens/admin.dart';
 import 'package:s1media_app/screens/contact.dart';
 import 'package:s1media_app/screens/login.dart';
@@ -168,6 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   //About us
                   ListTile(
+                    onTap: () => Get.to(() => const AboutScreen()),
                     leading: Image.asset(
                       "assets/about.png",
                       color: const Color(0xffdc3545),
