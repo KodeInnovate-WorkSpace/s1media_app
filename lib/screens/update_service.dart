@@ -7,7 +7,7 @@ import '../controller/admin_controller.dart';
 import '../widget/enquire_text_field.dart';
 
 class UpdateService extends StatefulWidget {
-  final String serviceId;
+  final int serviceId;
   final String title;
   final String subText;
   final List<String> vidUrls;
@@ -237,6 +237,7 @@ class _UpdateServiceState extends State<UpdateService> {
                           titleController.text,
                           subTextController.text,
                           vidUrlsList,
+                          context
                         );
 
                         setState(() {

@@ -155,11 +155,11 @@ class AdminScreen extends StatelessWidget {
                             onPressed: () {
                               Get.to(
                                 () => UpdateService(
-                                  serviceId: service.id,
+                                  serviceId: service['id'],
                                   title: service['title'],
                                   subText: service['subText'],
-                                  vidUrls: List<String>.from(service['vidUrls']),
-                                  imgUrl: service['imgUrl'],
+                                  vidUrls: List<String>.from(service['vidUrl']),
+                                  imgUrl: service['imageUrl'],
                                 ),
                                 transition: Transition.rightToLeft,
                                 duration: const Duration(milliseconds: 500),

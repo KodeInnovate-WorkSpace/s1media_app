@@ -86,5 +86,36 @@ class AdminController {
   }
 
   //update service
-  Future<void> updateService(String id, String imageUrl, String title, String subText, List<String> vidUrl) async {}
+  Future<void> updateService(int id, String imageUrl, String title, String subText, List<String> vidUrl, BuildContext context) async {
+    try {
+      logger.i("Fetching service with id: $id");
+
+      // Fetch the document(s) with the matching id
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('service').where('id', isEqualTo: id).get();
+
+      if (querySnapshot.docs.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Service not found")));
+        logger.w("Service with id: $id not found");
+        return;
+      }
+
+      // Update the matching document(s)
+      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+        await doc.reference.update({
+          'imageUrl': imageUrl,
+          'title': title,
+          'subText': subText,
+          'vidUrl': vidUrl,
+        });
+        logger.i("Updated service with doc id: ${doc.id}");
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Service Updated")));
+
+      logger.i("Service updated successfully");
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Service not updated, something went wrong")));
+      logger.e("Error updating service", error: e);
+    }
+  }
 }
