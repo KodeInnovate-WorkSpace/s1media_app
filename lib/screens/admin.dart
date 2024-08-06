@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
 import 'package:s1media_app/screens/update_service.dart';
+import 'package:s1media_app/screens/user.dart';
 import '../widget/enquire_text_field.dart';
 import 'add_service.dart';
 
@@ -13,9 +14,8 @@ class AdminScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _whatsappformkey = GlobalKey<FormState>();
-
     TextEditingController whatsappNumber = TextEditingController();
-    StateSetter setState;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -42,7 +42,7 @@ class AdminScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 // User count with flow chart
-                customContainer(context, "Users", 165, 100, "users"),
+                GestureDetector(onTap: () => Get.to(() => const UserScreen()), child: customContainer(context, "Users", 165, 100, "users")),
                 // Total services
                 customContainer(context, "Service", 165, 100, "service"),
               ],

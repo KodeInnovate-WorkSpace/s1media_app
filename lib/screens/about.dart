@@ -42,7 +42,8 @@ class AboutScreen extends StatelessWidget {
               const Text(
                 '''S1MEDIA is a dynamic media company dedicated to helping businesses in the real estate, restaurant, culinary, old or new car deals and hospitality enhance their online presence. Based on Mahape Road, our team of skilled shooting editors travels to your location to create stunning video content that we share across our YouTube channel and social media platforms.
                 ''',
-                style: TextStyle(fontSize: 16),
+                textAlign: TextAlign.justify,
+                style: TextStyle(fontSize: 18, fontFamily: 'cgm'),
               ),
 
               Column(
@@ -140,10 +141,7 @@ class AboutScreen extends StatelessWidget {
               ListTile(
                 title: const Text(
                   'Privacy Policy',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
+                  style: TextStyle(fontSize: 16, color: Colors.black, fontFamily: 'cgm'),
                 ),
                 onTap: () {
                   myLaunchURL("https://kodeinnovate-workspace.github.io/s1media_policy/privacy_policy.html");
@@ -154,25 +152,12 @@ class AboutScreen extends StatelessWidget {
               ListTile(
                 title: const Text(
                   'Terms & Conditions',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
+                  style: TextStyle(fontSize: 16, color: Colors.black, fontFamily: 'cgm'),
                 ),
                 onTap: () {
                   myLaunchURL("https://kodeinnovate-workspace.github.io/s1media_policy/terms.html");
                 },
               ),
-
-              // const Center(
-              //   child: Text(
-              //     "S1Media, Kalyan Phata near indian oil petrol pump - 421208",
-              //     textAlign: TextAlign.center,
-              //     style: TextStyle(
-              //       color: Color(0xffBA1D17),
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ),
