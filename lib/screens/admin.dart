@@ -59,46 +59,67 @@ class AdminScreen extends StatelessWidget {
                     style: TextStyle(fontFamily: "cgb", fontSize: 20),
                   ),
                   const SizedBox(height: 22),
-                  StatefulBuilder(builder: (context, setState) {
-                    return Row(
-                      children: [
-                        Expanded(
-                          child: enquireTextField(whatsappNumber, "WhatsApp Number", setState, (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'This field cannot be empty';
-                            }
-                            return null;
-                          }),
-                        ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            HapticFeedback.selectionClick();
-                            if (_whatsappformkey.currentState!.validate()) {
-                            } else {
-                              Get.snackbar("Empty Field", "Please fill necessary details to continue", duration: const Duration(milliseconds: 600));
-                              return;
-                            }
-                          },
-                          style: ButtonStyle(
-                            overlayColor: WidgetStateProperty.all(Colors.transparent),
-                            backgroundColor: WidgetStateProperty.all(const Color(0xffdc3545)),
-                            shape: WidgetStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10), // Adjust the value to your desired radius
+                  StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance.collection("whatsappNumber").snapshots(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return const CircularProgressIndicator(
+                            color: Color(0xffdc3545),
+                          );
+                        }
+                        final data = snapshot.data!.docs.first;
+                        final phoneNumber = data['phone'].toString();
+                        whatsappNumber.text = phoneNumber;
+                        return StatefulBuilder(builder: (context, setState) {
+                          return Row(
+                            children: [
+                              Expanded(
+                                child: enquireTextField(whatsappNumber, "WhatsApp Number", setState, (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'This field cannot be empty';
+                                  }
+                                  return null;
+                                }),
                               ),
-                            ),
-                          ),
-                          child: const Text(
-                            "Update",
-                            style: TextStyle(fontFamily: 'cgb', fontSize: 15, color: Colors.white),
-                          ),
-                        )
-                      ],
-                    );
-                  }),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              TextButton(
+                                onPressed: () async {
+                                  HapticFeedback.selectionClick();
+                                  if (_whatsappformkey.currentState!.validate()) {
+                                    final newPhoneNumber = whatsappNumber.text;
+                                    if (newPhoneNumber != phoneNumber) {
+                                      await FirebaseFirestore.instance
+                                          .collection("whatsappNumber")
+                                          .doc(data.id) // Assuming the document ID is needed
+                                          .update({'phone': newPhoneNumber});
+                                      Get.snackbar("Success", "Phone number updated successfully", duration: const Duration(milliseconds: 600));
+                                    } else {
+                                      Get.snackbar("Change Number", "The phone number is the same as before", duration: const Duration(milliseconds: 800));
+                                    }
+                                  } else {
+                                    Get.snackbar("Empty Field", "Please fill necessary details to continue", duration: const Duration(milliseconds: 600));
+                                  }
+                                },
+                                style: ButtonStyle(
+                                  overlayColor: WidgetStateProperty.all(Colors.transparent),
+                                  backgroundColor: WidgetStateProperty.all(const Color(0xffdc3545)),
+                                  shape: WidgetStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10), // Adjust the value to your desired radius
+                                    ),
+                                  ),
+                                ),
+                                child: const Text(
+                                  "Update",
+                                  style: TextStyle(fontFamily: 'cgb', fontSize: 15, color: Colors.white),
+                                ),
+                              )
+                            ],
+                          );
+                        });
+                      }),
                 ],
               ),
             ),
@@ -141,7 +162,10 @@ class AdminScreen extends StatelessWidget {
                 stream: FirebaseFirestore.instance.collection('service').snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Center(
+                        child: CircularProgressIndicator(
+                      color: Color(0xffdc3545),
+                    ));
                   }
                   final services = snapshot.data!.docs;
                   return ListView.builder(
@@ -150,7 +174,13 @@ class AdminScreen extends StatelessWidget {
                       final service = services[index];
                       return Dismissible(
                         key: Key(service.id),
-                        background: Container(color: const Color(0xffdc3545)),
+                        background: Container(
+                          color: const Color(0xffdc3545),
+                          child: const Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                          ),
+                        ),
                         confirmDismiss: (direction) {
                           return showDialog(
                             context: context,
@@ -269,7 +299,9 @@ class AdminScreen extends StatelessWidget {
       stream: FirebaseFirestore.instance.collection(collectionName).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const CircularProgressIndicator();
+          return const CircularProgressIndicator(
+            color: Color(0xffdc3545),
+          );
         }
         final servicesCount = snapshot.data!.docs.length;
         return Container(
