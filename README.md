@@ -1,5 +1,5 @@
 ![Logo](https://github.com/KodeInnovate-WorkSpace/s1media_app/blob/master/assets/full_logo.png)
-# S1Media Flutter App
+# S1Media App
  Welcome to the S1Media Flutter App repository! This app is developed by Kodeinnovate Solutions and is maintained for future development. This README provides an overview of the project, setup instructions, and other necessary details to help future developers continue the project seamlessly.
 
 ## Table of Contents
@@ -57,7 +57,7 @@ The S1Media Flutter App is designed to provide a seamless login experience using
 ```flutter run```
 
 # Credentials Setup
-The credentials for email OTP authentication are stored in the assets/.env file, which is not uploaded to GitHub for security reasons. Future developers need to create this file with the appropriate credentials.
+The credentials for email OTP authentication are stored in the `assets/.env` file, which is not uploaded to GitHub for security reasons. Future developers need to create this file with the appropriate credentials.
 
 1. Create the `.env` File
 
@@ -68,4 +68,4 @@ The credentials for email OTP authentication are stored in the assets/.env file,
    `APP_PASSWORD="<App password for the gmail account>"`<br/>
 
 2. Configure Firebase
-- Ensure that the Firebase project is set up and the google-services.json file is added to the android/app directory.
+- Ensure that the Firebase project is set up and the google-services.json file is added to the `android/app` directory.

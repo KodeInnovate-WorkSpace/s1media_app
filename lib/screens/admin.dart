@@ -159,7 +159,7 @@ class AdminScreen extends StatelessWidget {
             // Scrollable container with list of services
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance.collection('service').snapshots(),
+                stream: FirebaseFirestore.instance.collection('service').orderBy('id').snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return const Center(
