@@ -93,7 +93,7 @@ class AdminScreen extends StatelessWidget {
                                       await FirebaseFirestore.instance
                                           .collection("whatsappNumber")
                                           .doc(data.id) // Assuming the document ID is needed
-                                          .update({'phone': newPhoneNumber});
+                                          .update({'phone': int.parse(newPhoneNumber)});
                                       Get.snackbar("Success", "Phone number updated successfully", duration: const Duration(milliseconds: 600));
                                     } else {
                                       Get.snackbar("Change Number", "The phone number is the same as before", duration: const Duration(milliseconds: 800));

@@ -168,10 +168,11 @@ class _ContactScreenState extends State<ContactScreen> {
     String lname = lnameController.text;
 
     String fullMessage = "*Contact Us:* \n *Email:* $email\n *Phone:* $phone\n *First Name:* $fname\n *Last Name:* $lname\n *Message:* $message";
-    String phoneNumber = dotenv.env['RECEIVER_PHONE']!; // Replace with the recipient's phone number
+    // String receiverPhoneNumber = dotenv.env['RECEIVER_PHONE']!;
+    String receiverPhoneNumber = await userObj.retrieveWhatsappNumber();
 
     // Construct the WhatsApp URL
-    String whatsappUrl = "https://wa.me/$phoneNumber?text=${Uri.encodeComponent(fullMessage)}";
+    String whatsappUrl = "https://wa.me/$receiverPhoneNumber?text=${Uri.encodeComponent(fullMessage)}";
 
     if (await canLaunch(whatsappUrl)) {
       await launch(whatsappUrl);
