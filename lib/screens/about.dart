@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../widget/choose_us_container.dart';
-
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
 
@@ -47,6 +45,95 @@ class AboutScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 16),
               ),
 
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Contact",
+                    style: TextStyle(fontFamily: 'cgblack', fontSize: 20),
+                  ),
+                  ListTile(
+                    leading: Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xffdc3545),
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.all(6.0),
+                          child: Icon(
+                            Icons.email,
+                            color: Colors.white,
+                            size: 15,
+                          ),
+                        )),
+                    title: const Text("info@s1media.in", style: TextStyle(color: Color(0xff666666), fontFamily: 'cgb')),
+                    onTap: () async {
+                      Uri email = Uri(scheme: 'mailto', path: "info@s1media.in");
+                      await launchUrl(email);
+                    },
+                  ),
+                  ListTile(
+                    leading: Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xffdc3545),
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.all(6.0),
+                          child: Icon(
+                            Icons.phone,
+                            color: Colors.white,
+                            size: 15,
+                          ),
+                        )),
+                    title: const Text("+91 9326500602", style: TextStyle(color: Color(0xff666666), fontFamily: 'cgb')),
+                    onTap: () async {
+                      Uri dialNumber = Uri(scheme: 'tel', path: "9326500602");
+                      await launchUrl(dialNumber);
+                    },
+                  ),
+                  ListTile(
+                    leading: Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xffdc3545),
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.all(6.0),
+                          child: Icon(
+                            Icons.language,
+                            color: Colors.white,
+                            size: 15,
+                          ),
+                        )),
+                    title: const Text("s1media.in", style: TextStyle(color: Color(0xff666666), fontFamily: 'cgb')),
+                    onTap: () {
+                      myLaunchURL('https://www.s1media.in/');
+                    },
+                  ),
+                  ListTile(
+                    leading: Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xffdc3545),
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.all(6.0),
+                          child: Icon(
+                            Icons.apartment,
+                            color: Colors.white,
+                            size: 15,
+                          ),
+                        )),
+                    title: const Text("S1Media, Kalyan phata near indian oil petrol pump - 421208", style: TextStyle(color: Color(0xff666666), fontFamily: 'cgb')),
+                    onTap: () {
+                      // myLaunchURL('https://www.s1media.in/');
+                    },
+                  ),
+                ],
+              ),
+
               const Divider(),
 
               // Privacy
@@ -77,15 +164,15 @@ class AboutScreen extends StatelessWidget {
                 },
               ),
 
-              const Center(
-                child: Text(
-                  "S1Media, Kalyan Phata near indian oil petrol pump - 421208",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color(0xffBA1D17),
-                  ),
-                ),
-              ),
+              // const Center(
+              //   child: Text(
+              //     "S1Media, Kalyan Phata near indian oil petrol pump - 421208",
+              //     textAlign: TextAlign.center,
+              //     style: TextStyle(
+              //       color: Color(0xffBA1D17),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),

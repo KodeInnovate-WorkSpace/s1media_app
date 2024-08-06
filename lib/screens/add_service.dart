@@ -78,8 +78,10 @@ class _AddServiceState extends State<AddService> {
                 StatefulBuilder(builder: (context, setState) {
                   return Column(
                     children: [
+                      //Image view
                       _image != null ? Image.file(_image!, height: 100, width: 100) : const Text("No image selected"),
                       const SizedBox(height: 10),
+                      //Image selection
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -126,6 +128,7 @@ class _AddServiceState extends State<AddService> {
                         ],
                       ),
                       const SizedBox(height: 20),
+                      //title
                       enquireTextField(titleController, "Title", setState, (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter title';
@@ -133,6 +136,7 @@ class _AddServiceState extends State<AddService> {
                         return null;
                       }),
                       const SizedBox(height: 20),
+                      //sub-text
                       enquireTextField(subTextController, "Sub-Text", setState, (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter sub-text';

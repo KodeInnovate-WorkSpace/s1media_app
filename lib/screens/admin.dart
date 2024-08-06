@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
 import 'package:s1media_app/screens/update_service.dart';
+import '../widget/enquire_text_field.dart';
 import 'add_service.dart';
 
 class AdminScreen extends StatelessWidget {
@@ -10,6 +12,10 @@ class AdminScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _whatsappformkey = GlobalKey<FormState>();
+
+    TextEditingController whatsappNumber = TextEditingController();
+    StateSetter setState;
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -42,6 +48,62 @@ class AdminScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 20),
+
+            Form(
+              key: _whatsappformkey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "WhatsApp Number",
+                    style: TextStyle(fontFamily: "cgb", fontSize: 20),
+                  ),
+                  const SizedBox(height: 22),
+                  StatefulBuilder(builder: (context, setState) {
+                    return Row(
+                      children: [
+                        Expanded(
+                          child: enquireTextField(whatsappNumber, "WhatsApp Number", setState, (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'This field cannot be empty';
+                            }
+                            return null;
+                          }),
+                        ),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            HapticFeedback.selectionClick();
+                            if (_whatsappformkey.currentState!.validate()) {
+                            } else {
+                              Get.snackbar("Empty Field", "Please fill necessary details to continue", duration: const Duration(milliseconds: 600));
+                              return;
+                            }
+                          },
+                          style: ButtonStyle(
+                            overlayColor: WidgetStateProperty.all(Colors.transparent),
+                            backgroundColor: WidgetStateProperty.all(const Color(0xffdc3545)),
+                            shape: WidgetStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10), // Adjust the value to your desired radius
+                              ),
+                            ),
+                          ),
+                          child: const Text(
+                            "Update",
+                            style: TextStyle(fontFamily: 'cgb', fontSize: 15, color: Colors.white),
+                          ),
+                        )
+                      ],
+                    );
+                  }),
+                ],
+              ),
+            ),
+            const SizedBox(height: 22),
+
             // Add service new
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
