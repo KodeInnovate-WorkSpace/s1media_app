@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:s1media_app/widget/enquire_text_field.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../controller/user_controller.dart';

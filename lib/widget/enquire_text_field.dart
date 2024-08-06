@@ -5,7 +5,7 @@ Widget enquireTextField(TextEditingController textController, String placeholder
     controller: textController,
     cursorColor: const Color(0xffdc3545),
     keyboardType: (placeholder == "WhatsApp Number" || placeholder == "Phone Number") ? TextInputType.phone : TextInputType.text,
-    // keyboardType: TextInputType.phone,
+
     style: const TextStyle(color: Colors.grey, fontFamily: 'cgm'),
     decoration: InputDecoration(
       filled: true,
