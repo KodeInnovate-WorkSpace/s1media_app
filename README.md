@@ -1,8 +1,9 @@
+![Logo](https://github.com/KodeInnovate-WorkSpace/s1media_app/blob/master/assets/full_logo.png)
 # S1Media Flutter App
  Welcome to the S1Media Flutter App repository! This app is developed by Kodeinnovate Solutions and is maintained for future development. This README provides an overview of the project, setup instructions, and other necessary details to help future developers continue the project seamlessly.
 
 ## Table of Contents
-- [Project Overview](Credentials Setup)
+- Project Overview
 - Features
 - Technologies Used
 - File Structure
@@ -61,7 +62,7 @@ The credentials for email OTP authentication are stored in the assets/.env file,
 1. Create the `.env` File
 
 - Navigate to the assets directory.
-- Create a file named .env.
+- Create a file named `.env`.
 - Add the necessary credentials in the following format: <br/>
    `EMAIL="<Email from which mails will be sent for otp>"`<br/>
    `APP_PASSWORD="<App password for the gmail account>"`<br/>
