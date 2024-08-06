@@ -13,7 +13,7 @@ class AdminScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _whatsappformkey = GlobalKey<FormState>();
+    final whatsappformkey = GlobalKey<FormState>();
     TextEditingController whatsappNumber = TextEditingController();
 
     return Scaffold(
@@ -50,7 +50,7 @@ class AdminScreen extends StatelessWidget {
             const SizedBox(height: 20),
 
             Form(
-              key: _whatsappformkey,
+              key: whatsappformkey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -87,7 +87,7 @@ class AdminScreen extends StatelessWidget {
                               TextButton(
                                 onPressed: () async {
                                   HapticFeedback.selectionClick();
-                                  if (_whatsappformkey.currentState!.validate()) {
+                                  if (whatsappformkey.currentState!.validate()) {
                                     final newPhoneNumber = whatsappNumber.text;
                                     if (newPhoneNumber != phoneNumber) {
                                       await FirebaseFirestore.instance
@@ -155,7 +155,6 @@ class AdminScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 20),
             // Scrollable container with list of services
             Expanded(
               child: StreamBuilder<QuerySnapshot>(

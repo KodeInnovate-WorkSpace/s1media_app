@@ -20,21 +20,21 @@ class _VideoScreenState extends State<VideoScreen> {
 
     videoControllers = widget.videos
         .map((url) {
-      final videoId = YoutubePlayer.convertUrlToId(url);
-      if (videoId == null) {
-        logger.e("Invalid URL: $url");
-        return null;
-      }
-      return YoutubePlayerController(
-        initialVideoId: videoId,
-        flags: const YoutubePlayerFlags(
-          hideControls: false,
-          showLiveFullscreenButton: true,
-          loop: false,
-          autoPlay: false,
-        ),
-      );
-    })
+          final videoId = YoutubePlayer.convertUrlToId(url);
+          if (videoId == null) {
+            logger.e("Invalid URL: $url");
+            return null;
+          }
+          return YoutubePlayerController(
+            initialVideoId: videoId,
+            flags: const YoutubePlayerFlags(
+              hideControls: false,
+              showLiveFullscreenButton: true,
+              loop: false,
+              autoPlay: false,
+            ),
+          );
+        })
         .whereType<YoutubePlayerController>()
         .toList();
   }
@@ -57,36 +57,55 @@ class _VideoScreenState extends State<VideoScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "See our work and what we deliver",
-              style: TextStyle(
-                fontFamily: "cgblack",
-                fontSize: 32,
-              ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: videoControllers.length,
-                itemBuilder: (context, index) {
-                  final controller = videoControllers[index];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: YoutubePlayer(
-                      controller: controller,
-                      showVideoProgressIndicator: true,
-                      progressIndicatorColor: Colors.blueAccent,
-                      aspectRatio: 16 / 9,
+        child: videoControllers.isEmpty
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
+                    child: Image.asset("assets/video_placeholder.jpg"),
+                  ),
+                  const Text(
+                    "We are on a shoot!",
+                    style: TextStyle(
+                      fontFamily: "cgblack",
+                      fontSize: 32,
                     ),
-                  );
-                },
+                  ),
+                  const SizedBox(
+                    height: 130,
+                  ),
+                ],
+              )
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "See our work and what we deliver",
+                    style: TextStyle(
+                      fontFamily: "cgblack",
+                      fontSize: 32,
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: videoControllers.length,
+                      itemBuilder: (context, index) {
+                        final controller = videoControllers[index];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: YoutubePlayer(
+                            controller: controller,
+                            showVideoProgressIndicator: true,
+                            progressIndicatorColor: Colors.blueAccent,
+                            aspectRatio: 16 / 9,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }

@@ -166,8 +166,8 @@ class UserScreen extends StatelessWidget {
             if (!snapshot.hasData) {
               return const Center(
                   child: CircularProgressIndicator(
-                    color: Color(0xffdc3545),
-                  ));
+                color: Color(0xffdc3545),
+              ));
             }
             final usersData = snapshot.data!.docs;
             return ListView.builder(
@@ -203,7 +203,7 @@ class UserScreen extends StatelessWidget {
                               TextButton(
                                 onPressed: () => Navigator.of(context).pop(false),
                                 style: ButtonStyle(
-                                  overlayColor: MaterialStateProperty.all(Colors.red[900]),
+                                  overlayColor: WidgetStateProperty.all(Colors.red[900]),
                                 ),
                                 child: const Text(
                                   "No",
@@ -218,7 +218,7 @@ class UserScreen extends StatelessWidget {
                                   // Get.back();
                                 },
                                 style: ButtonStyle(
-                                  overlayColor: MaterialStateProperty.all(Colors.grey[700]),
+                                  overlayColor: WidgetStateProperty.all(Colors.grey[700]),
                                 ),
                                 child: const Text(
                                   "Yes",
@@ -239,7 +239,7 @@ class UserScreen extends StatelessWidget {
                       ),
                     ),
                     subtitle: Text(
-                      "Phone: ${data['phone']}",
+                      "Phone: ${data['phone'] ?? "Unavailable"}",
                       style: const TextStyle(
                         fontFamily: 'cgm',
                       ),
@@ -250,10 +250,7 @@ class UserScreen extends StatelessWidget {
                       dropdownColor: Colors.white,
                       onChanged: (int? newValue) {
                         if (newValue != null) {
-                          FirebaseFirestore.instance
-                              .collection('users')
-                              .doc(data.id)
-                              .update({'type': newValue});
+                          FirebaseFirestore.instance.collection('users').doc(data.id).update({'type': newValue});
                         }
                       },
                       items: statusOptions.map<DropdownMenuItem<int>>((int status) {

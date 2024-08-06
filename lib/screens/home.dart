@@ -188,7 +188,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   //User email
                   ListTile(
-                    leading: const Icon(Icons.person),
+                    leading: const Icon(
+                      Icons.person,
+                      color: Color(0xffEF4B4B),
+                    ),
                     title: Text(authObj.email),
                   ),
                   //Logout Button

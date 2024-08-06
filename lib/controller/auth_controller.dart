@@ -134,6 +134,7 @@ class AuthController {
       'email': userEmail,
       'date': todayDate,
       'type': 0,
+      'phone':"",
     };
 
     try {

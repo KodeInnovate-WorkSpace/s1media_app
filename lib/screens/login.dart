@@ -169,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               loginLoading = false;
                             });
                           } else {
-                            Get.snackbar("Email is not valid", "Try correcting the email address");
+                            Get.snackbar("Email is not valid", "Try correcting the email address", duration: const Duration(milliseconds: 500));
                             log("Email is not valid");
                           }
                         },
@@ -204,7 +204,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: Center(
                                   child: Text(
                                     "Next",
-                                    // style: TextStyle(color: Colors.white, fontSize: 16.0, fontFamily: 'Satoshi-Black'),
                                     style: TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'cgblack'),
                                   ),
                                 ),
