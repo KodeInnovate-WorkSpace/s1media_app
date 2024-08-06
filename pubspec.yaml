@@ -1,7 +1,7 @@
 name: s1media_app
 description: "A new Flutter project."
 publish_to: 'none'
-version: 0.1.0
+version: 0.1.0+1
 
 environment:
   sdk: '>=3.4.3 <4.0.0'
@@ -15,6 +15,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_dotenv: ^5.1.0
+  flutter_launcher_icons: ^0.13.1
   flutter_native_splash: ^2.4.1
   flutter_snake_navigationbar: ^0.6.1
   get: ^4.6.6
@@ -34,7 +35,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
-  flutter_launcher_icons: ^0.13.1
 
 flutter_icons:
   android: true

@@ -10,7 +10,8 @@
 .svn/
 migrate_working_dir/
 assets/.env
-
+app/s1mediaApp.jks
+key.properties
 # IntelliJ related
 *.iml
 *.ipr
