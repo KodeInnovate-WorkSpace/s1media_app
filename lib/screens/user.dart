@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:logger/logger.dart';
 
 // class UserScreen extends StatelessWidget {
 //   const UserScreen({super.key});
@@ -214,8 +217,8 @@ class UserScreen extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () async {
-                                  // await deleteService(data['id']);
-                                  // Get.back();
+                                  await deleteUser(data['id']);
+                                  Get.back();
                                 },
                                 style: ButtonStyle(
                                   overlayColor: WidgetStateProperty.all(Colors.grey[700]),
@@ -271,5 +274,27 @@ class UserScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> deleteUser(dynamic id) async {
+    Logger logger = Logger();
+
+    try {
+      Query query = FirebaseFirestore.instance.collection('users');
+
+      // Add conditions to your query if any
+      if (id != null) {
+        query = query.where(FieldPath(const ['id']), isEqualTo: id);
+      }
+
+      // Get the documents matching the query
+      QuerySnapshot querySnapshot = await query.get();
+      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+        await doc.reference.delete();
+      }
+      logger.i("User Deleted!");
+    } catch (e) {
+      logger.e("Error deleting user", error: e);
+    }
   }
 }

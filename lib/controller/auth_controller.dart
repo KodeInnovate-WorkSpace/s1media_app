@@ -125,6 +125,32 @@ class AuthController {
     }
   }
 
+  // Future<void> saveUser(String userEmail) async {
+  //   // Get today's date
+  //   String todayDate = DateFormat('dd-MM-yyyy').format(DateTime.now());
+  //   var userId = const Uuid().v4();
+  //   Map<String, dynamic> userFields = {
+  //     'id': userId,
+  //     'email': userEmail,
+  //     'date': todayDate,
+  //     'type': 0,
+  //     'phone':"",
+  //   };
+  //
+  //   try {
+  //     await checkUserExistence(userEmail);
+  //     if (!_isUserExist) {
+  //       await FirebaseFirestore.instance.collection('users').doc(userId).set(userFields);
+  //       Get.to(() => PhoneScreen(email: userEmail), transition: Transition.rightToLeft, duration: const Duration(milliseconds: 500));
+  //     } else {
+  //       debugPrint("User already exists.");
+  //       await sendMail(userEmail, generateOtp());
+  //     }
+  //   } catch (e) {
+  //     debugPrint("Error storing user in firebase: $e");
+  //   }
+  // }
+
   Future<void> saveUser(String userEmail) async {
     // Get today's date
     String todayDate = DateFormat('dd-MM-yyyy').format(DateTime.now());
@@ -134,7 +160,7 @@ class AuthController {
       'email': userEmail,
       'date': todayDate,
       'type': 0,
-      'phone':"",
+      'phone': "",
     };
 
     try {
@@ -143,8 +169,19 @@ class AuthController {
         await FirebaseFirestore.instance.collection('users').doc(userId).set(userFields);
         Get.to(() => PhoneScreen(email: userEmail), transition: Transition.rightToLeft, duration: const Duration(milliseconds: 500));
       } else {
-        debugPrint("User already exists.");
-        await sendMail(userEmail, generateOtp());
+        // User exists, check if the phone field is empty
+        var userDoc = await FirebaseFirestore.instance.collection('users').where('email', isEqualTo: userEmail).limit(1).get();
+        if (userDoc.docs.isNotEmpty) {
+          var userData = userDoc.docs.first.data();
+          if (userData['phone'] == null || userData['phone'].isEmpty) {
+            // Phone number is empty, navigate to PhoneScreen
+            Get.to(() => PhoneScreen(email: userEmail), transition: Transition.rightToLeft, duration: const Duration(milliseconds: 500));
+          } else {
+            // Phone number is not empty, proceed as usual
+            debugPrint("User already exists.");
+            await sendMail(userEmail, generateOtp());
+          }
+        }
       }
     } catch (e) {
       debugPrint("Error storing user in firebase: $e");

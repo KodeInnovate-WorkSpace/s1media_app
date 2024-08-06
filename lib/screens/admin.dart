@@ -289,7 +289,7 @@ class AdminScreen extends StatelessWidget {
       }
       logger.i("Service Deleted!");
     } catch (e) {
-      logger.e("Error deleting category", error: e);
+      logger.e("Error deleting user", error: e);
     }
   }
 
