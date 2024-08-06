@@ -26,13 +26,14 @@ The S1Media Flutter App is designed to provide a seamless login experience using
 - Custom Fonts: Satoshi and CabinetGrotesk
 
 ## File Structure
+```
 |-- assets/
 |-- controller/       # Logic controllers
 |-- model/            # Data models
 |-- screens/          # UI and user interaction screens
 |-- pubspec.yaml
 |-- README.md
-
+```
 ## Color Reference
 
 | Color             | Hex                                                                |
@@ -57,13 +58,13 @@ The S1Media Flutter App is designed to provide a seamless login experience using
 ## Credentials Setup
 The credentials for email OTP authentication are stored in the assets/.env file, which is not uploaded to GitHub for security reasons. Future developers need to create this file with the appropriate credentials.
 
-Create the `.env` File
+1. Create the `.env` File
 
-Navigate to the assets directory.
-1. Create a file named .env.
-Add the necessary credentials in the following format:
-   `EMAIL="<Email from which mails will be sent for otp>"`
-   `APP_PASSWORD="<App password for the gmail account>"`
+- Navigate to the assets directory.
+- Create a file named .env.
+- Add the necessary credentials in the following format: <br/>
+   `EMAIL="<Email from which mails will be sent for otp>"`<br/>
+   `APP_PASSWORD="<App password for the gmail account>"`<br/>
+
 2. Configure Firebase
-
-Ensure that the Firebase project is set up and the google-services.json file is added to the android/app directory.
+- Ensure that the Firebase project is set up and the google-services.json file is added to the android/app directory.
