@@ -89,8 +89,8 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Image.asset(
                 "assets/menu.png",
                 fit: BoxFit.contain,
-                width: 20,
-                height: 20,
+                width: 28,
+                height: 28,
               ),
             ),
           ),

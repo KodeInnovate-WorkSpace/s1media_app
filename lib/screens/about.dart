@@ -40,7 +40,7 @@ class AboutScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               const Text(
-                '''S1MEDIA is a dynamic media company dedicated to helping businesses in the real estate, restaurant, culinary, old or new car deals and hospitality enhance their online presence. Based on Mahape Road, our team of skilled shooting editors travels to your location to create stunning video content that we share across our YouTube channel and social media platforms.
+                '''S1MEDIA is a dynamic media company dedicated to helping businesses in the real estate, restaurant, culinary, old or new car deals and hospitality enhance their online presence. Our team of skilled shooting editors travels to your location to create stunning video content that we share across on our YouTube channel and social media platforms.
                 ''',
                 textAlign: TextAlign.justify,
                 style: TextStyle(fontSize: 18, fontFamily: 'cgm'),
@@ -127,10 +127,7 @@ class AboutScreen extends StatelessWidget {
                             size: 15,
                           ),
                         )),
-                    title: const Text("S1Media, Kalyan phata near indian oil petrol pump - 421208", style: TextStyle(color: Color(0xff666666), fontFamily: 'cgb')),
-                    onTap: () {
-                      // myLaunchURL('https://www.s1media.in/');
-                    },
+                    title: const Text("S1Media, Kalyan phata near HP oil petrol pump - 421208", style: TextStyle(color: Color(0xff666666), fontFamily: 'cgb')),
                   ),
                 ],
               ),
