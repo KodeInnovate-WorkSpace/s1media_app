@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 import 'package:s1media_app/screens/home.dart';
+import 'package:s1media_app/screens/login.dart';
 import '../controller/auth_controller.dart';
 
 class OtpScreen extends StatefulWidget {
@@ -36,22 +37,31 @@ class _OtpScreenState extends State<OtpScreen> {
   @override
   Widget build(BuildContext context) {
     AuthController authObj = AuthController();
-
     return Scaffold(
       appBar: AppBar(
         title: const Text(
           "OTP Verification",
-          // style: TextStyle(fontSize: 17, fontFamily: 'Satoshi-Medium')
           style: TextStyle(fontSize: 17, fontFamily: 'cgb'),
         ),
         elevation: 0,
         backgroundColor: const Color(0xfff7f7f7),
         surfaceTintColor: Colors.transparent,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Get.back();
+        leading: PopScope(
+          canPop: false,
+          onPopInvoked: (didPop) async {
+            if (didPop) return;
+
+            final bool shouldPop = await _showBackDialog() ?? false;
+            if (context.mounted && shouldPop) {
+              Get.back();
+            }
           },
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () async {
+              final bool shouldPop = await _showBackDialog() ?? false;
+            },
+          ),
         ),
       ),
       backgroundColor: const Color(0xfff7f7f7),
@@ -148,5 +158,43 @@ class _OtpScreenState extends State<OtpScreen> {
         ),
       ),
     );
+  }
+
+  Future<bool?> _showBackDialog() async {
+    var _style = const TextStyle(fontFamily: 'cgb', color: Colors.black);
+    return showDialog(
+        context: context,
+        useSafeArea: true,
+        barrierColor: const Color.fromRGBO(0, 0, 0, 0.8),
+        builder: (_) => AlertDialog(
+              backgroundColor: Colors.white,
+              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
+              title: const Text(
+                "Are You Sure?",
+                style: TextStyle(fontFamily: 'cgblack', color: Color(0xffBA1D17)),
+              ),
+              content: Text(
+                "Do you want to go back and change the email address",
+                style: _style,
+              ),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    child: Text(
+                      "No",
+                      style: _style,
+                    )),
+                TextButton(
+                    onPressed: () {
+                      Get.offAll(() => const LoginScreen());
+                    },
+                    child: Text(
+                      "Yes",
+                      style: _style,
+                    ))
+              ],
+            ));
   }
 }

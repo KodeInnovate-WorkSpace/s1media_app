@@ -265,9 +265,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
         barrierColor: const Color.fromRGBO(0, 0, 0, 0.8),
         builder: (_) => AlertDialog(
               backgroundColor: Colors.white,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(45))
-              ),
+              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
               title: const Text(
                 "Are You Sure?",
                 style: TextStyle(fontFamily: 'cgblack', color: Color(0xffBA1D17)),
