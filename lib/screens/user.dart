@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:logger/logger.dart';
 
 // class UserScreen extends StatelessWidget {
@@ -241,12 +240,19 @@ class UserScreen extends StatelessWidget {
                         fontFamily: 'cgblack',
                       ),
                     ),
-                    subtitle: Text(
-                      "Phone: ${data['phone'] ?? "Unavailable"}",
-                      style: const TextStyle(
-                        fontFamily: 'cgm',
-                      ),
-                    ),
+                    subtitle: data['phone'] != ""
+                        ? Text(
+                            "Phone: ${data['phone']} ",
+                            style: const TextStyle(
+                              fontFamily: 'cgm',
+                            ),
+                          )
+                        : const Text(
+                            "Phone: Unavailable ",
+                            style: TextStyle(
+                              fontFamily: 'cgm',
+                            ),
+                          ),
                     trailing: DropdownButton<int>(
                       value: data['type'],
                       iconEnabledColor: const Color(0xffdc3545),

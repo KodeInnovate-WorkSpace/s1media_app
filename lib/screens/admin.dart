@@ -187,11 +187,11 @@ class AdminScreen extends StatelessWidget {
                               backgroundColor: Colors.white,
                               title: const Text(
                                 "Delete",
-                                style: TextStyle(color: Colors.black),
+                                style: TextStyle(fontFamily: 'cgblack', color: Colors.black),
                               ),
                               content: const Text(
                                 "Are you sure you want to delete this?",
-                                style: TextStyle(color: Colors.black),
+                                style: TextStyle(color: Colors.black, fontFamily: 'cgm'),
                               ),
                               actions: [
                                 Row(
@@ -204,9 +204,7 @@ class AdminScreen extends StatelessWidget {
                                       ),
                                       child: const Text(
                                         "No",
-                                        style: TextStyle(
-                                          color: Color(0xffEF4B4B),
-                                        ),
+                                        style: TextStyle(color: Color(0xffEF4B4B), fontFamily: 'cgm'),
                                       ),
                                     ),
                                     TextButton(
@@ -219,7 +217,7 @@ class AdminScreen extends StatelessWidget {
                                       ),
                                       child: const Text(
                                         "Yes",
-                                        style: TextStyle(color: Colors.black),
+                                        style: TextStyle(color: Colors.black, fontFamily: 'cgm'),
                                       ),
                                     ),
                                   ],

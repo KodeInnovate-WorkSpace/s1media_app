@@ -300,7 +300,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     items: _items,
                     options: CarouselOptions(
                       height: 380.0,
-                      autoPlay: false,
+                      autoPlay: true,
+                      autoPlayInterval: const Duration(seconds: 3),
                       autoPlayCurve: Curves.fastOutSlowIn,
                       enableInfiniteScroll: false,
                       viewportFraction: 1,
