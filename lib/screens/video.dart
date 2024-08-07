@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class VideoScreen extends StatefulWidget {
   final List<String> videos;
@@ -27,12 +29,7 @@ class _VideoScreenState extends State<VideoScreen> {
           }
           return YoutubePlayerController(
             initialVideoId: videoId,
-            flags: const YoutubePlayerFlags(
-              hideControls: false,
-              showLiveFullscreenButton: true,
-              loop: false,
-              autoPlay: false,
-            ),
+            flags: const YoutubePlayerFlags(hideControls: false, loop: false, autoPlay: false, disableDragSeek: true, useHybridComposition: true),
           );
         })
         .whereType<YoutubePlayerController>()
@@ -44,6 +41,11 @@ class _VideoScreenState extends State<VideoScreen> {
     for (final controller in videoControllers) {
       controller.dispose();
     }
+    // Set preferred orientations back to portrait mode
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     super.dispose();
   }
 
@@ -92,13 +94,36 @@ class _VideoScreenState extends State<VideoScreen> {
                       itemCount: videoControllers.length,
                       itemBuilder: (context, index) {
                         final controller = videoControllers[index];
+                        final videoUrl = widget.videos[index];
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: YoutubePlayer(
-                            controller: controller,
-                            showVideoProgressIndicator: true,
-                            progressIndicatorColor: Colors.blueAccent,
-                            aspectRatio: 16 / 9,
+                          child: Column(
+                            children: [
+                              Stack(
+                                children: [
+                                  YoutubePlayer(
+                                    controller: controller,
+                                    showVideoProgressIndicator: true,
+                                    progressIndicatorColor: Colors.blueAccent,
+                                    aspectRatio: 16 / 9,
+                                  ),
+                                  Positioned(
+                                    top: 5,
+                                    right: 5,
+                                    child: IconButton(
+                                      onPressed: () async {
+                                        if (await canLaunch(videoUrl)) {
+                                          await launch(videoUrl);
+                                        } else {
+                                          logger.e("Could not launch $videoUrl");
+                                        }
+                                      },
+                                      icon: const Icon(Icons.north_east, color: Colors.white, size: 25),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         );
                       },
