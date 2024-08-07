@@ -29,7 +29,7 @@ class _VideoScreenState extends State<VideoScreen> {
           }
           return YoutubePlayerController(
             initialVideoId: videoId,
-            flags: const YoutubePlayerFlags(hideControls: false, loop: false, autoPlay: false, disableDragSeek: true, useHybridComposition: true),
+            flags: const YoutubePlayerFlags(hideControls: false, loop: false, autoPlay: false, disableDragSeek: true),
           );
         })
         .whereType<YoutubePlayerController>()

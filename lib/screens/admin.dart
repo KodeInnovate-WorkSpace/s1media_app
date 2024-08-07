@@ -185,9 +185,10 @@ class AdminScreen extends StatelessWidget {
                             context: context,
                             builder: (context) => AlertDialog(
                               backgroundColor: Colors.white,
+                              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
                               title: const Text(
                                 "Delete",
-                                style: TextStyle(fontFamily: 'cgblack', color: Colors.black),
+                                style: TextStyle(fontFamily: 'cgblack', color: Color(0xffEF4B4B)),
                               ),
                               content: const Text(
                                 "Are you sure you want to delete this?",
@@ -227,6 +228,7 @@ class AdminScreen extends StatelessWidget {
                           );
                         },
                         child: ListTile(
+                          onTap: () => HapticFeedback.selectionClick(),
                           title: Text(
                             service['title'],
                             style: const TextStyle(

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
@@ -56,15 +57,16 @@ class UserScreen extends StatelessWidget {
                   confirmDismiss: (direction) {
                     return showDialog(
                       context: context,
-                      builder: (context) => AlertDialog(
+                      builder: (_) => AlertDialog(
                         backgroundColor: Colors.white,
+                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
                         title: const Text(
                           "Delete",
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(fontFamily: 'cgblack', color: Color(0xffEF4B4B)),
                         ),
                         content: const Text(
                           "Are you sure you want to delete this?",
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(fontFamily: 'cgb', color: Colors.black),
                         ),
                         actions: [
                           Row(
@@ -77,9 +79,7 @@ class UserScreen extends StatelessWidget {
                                 ),
                                 child: const Text(
                                   "No",
-                                  style: TextStyle(
-                                    color: Color(0xffEF4B4B),
-                                  ),
+                                  style: TextStyle(color: Color(0xffEF4B4B), fontFamily: 'cgb'),
                                 ),
                               ),
                               TextButton(
@@ -92,7 +92,7 @@ class UserScreen extends StatelessWidget {
                                 ),
                                 child: const Text(
                                   "Yes",
-                                  style: TextStyle(color: Colors.black),
+                                  style: TextStyle(fontFamily: 'cgb', color: Colors.black),
                                 ),
                               ),
                             ],
@@ -104,6 +104,7 @@ class UserScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       ListTile(
+                        onTap: () => HapticFeedback.selectionClick(),
                         title: Text(
                           data['email'],
                           style: const TextStyle(

@@ -171,7 +171,8 @@ class _OtpScreenState extends State<OtpScreen> {
               shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
               title: const Text(
                 "Are You Sure?",
-                style: TextStyle(fontFamily: 'cgblack', color: Color(0xffBA1D17)),
+                style: TextStyle(fontFamily: 'cgblack', color: Color(0xffBA1D17)
+                ),
               ),
               content: Text(
                 "Do you want to go back and change the email address",
